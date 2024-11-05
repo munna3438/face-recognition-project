@@ -12,3 +12,11 @@ export type PageProps<
         user: User;
     };
 };
+
+
+export interface Capture {
+    id: string;
+    name: string;
+    url: string;
+    time: string;
+}
