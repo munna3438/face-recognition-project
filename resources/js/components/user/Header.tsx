@@ -9,10 +9,26 @@ export default function Header() {
             <ul className="flex gap-3">
                 <li>
                     <NavLink
-                        href="/dashboard"
+                        href={route('dashboard')}
                         active={route().current('dashboard')}
                     >
                         Home
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        href={route('users.index')}
+                        active={route().current('users.index')}
+                    >
+                        Users
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        href={route('users.add')}
+                        active={route().current('users.add')}
+                    >
+                        Add User
                     </NavLink>
                 </li>
                 {/* <li>
