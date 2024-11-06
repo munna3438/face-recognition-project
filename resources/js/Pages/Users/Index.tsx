@@ -1,13 +1,7 @@
+import AuthLayout from "@/Layouts/AuthLayout";
 
-import AuthLayout from '@/Layouts/AuthLayout';
-
-
-import React from 'react'
+import React from "react";
 
 export default function Dashboard() {
-  return (
-    <AuthLayout>
-        Users page
-    </AuthLayout>
-  )
+    return <AuthLayout>Users page</AuthLayout>;
 }
