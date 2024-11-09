@@ -17,7 +17,7 @@ export default function ImageModal({ image }: {image: string}) {
             <Dialog>
                 <DialogTrigger asChild>
                     {/* <Button variant="outline">Register new Student</Button> */}
-                    <img src={"data:image/png;base64," + image} className="w-16 aspect-square cursor-pointer" />
+                    <img src={image} className="w-16 aspect-square cursor-pointer" />
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[625px] p-0">
                     {/* <DialogHeader>
@@ -26,7 +26,7 @@ export default function ImageModal({ image }: {image: string}) {
                             Make changes to your profile here. Click save when you're done.
                         </DialogDescription>
                     </DialogHeader> */}
-                    <img src={"data:image/png;base64," + image} alt="" />
+                    <img src={image} alt="" />
                     {/* <DialogFooter>
                         <Button type="submit">Save changes</Button>
                     </DialogFooter> */}

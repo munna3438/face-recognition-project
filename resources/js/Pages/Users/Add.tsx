@@ -43,10 +43,8 @@ export default function Dashboard() {
                                 id="userGender"
                                 className="p-2 border focus:ring-0 border-gray-300 rounded text-[#333]"
                             >
-                                <option value="">-- Gender --</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="Others">Others</option>
+                                <option value="0" selected>Male</option>
+                                <option value="1">Female</option>
                             </select>
                         </div>
                         <div className="flex flex-col gap-1">

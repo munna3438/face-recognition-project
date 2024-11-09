@@ -16,7 +16,9 @@ export type PageProps<
 
 export interface Capture {
     id: string;
+    user_id: string;
     name: string;
-    url: string;
-    time: string;
+    image: string;
+    sex: number|null;
+    snap_timestamp: string;
 }

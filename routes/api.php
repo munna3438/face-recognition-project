@@ -1,53 +1,101 @@
 <?php
 
+use App\Models\Attendance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get("/{any}", function(Request $request, $any) {
-    $responseData = [
-        'requested_method' => 'GET',
-        'requested_endpoint' => "/" . $any,
-        'requested_body' => $request->all(),
-    ];
+Route::get('/attendances', function (Request $request) {
+    return Attendance::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->get();
+});
 
-    $responseJson = json_encode($responseData, JSON_PRETTY_PRINT);
+Route::post('/faceRecognition', function (Request $request) {
+    $output = new ConsoleOutput();
+    DB::beginTransaction();
+    try {
 
-    $logFilePath = storage_path('logs/endpoint_get_requests.log');
+        $imgPath = public_path('image/attendance/' . $request->frpic_name);
 
-    if (File::exists($logFilePath)) {
-        File::append($logFilePath, "\n==============================================================================\n\n");
-    } else {
-        File::put($logFilePath, '');
+        $imgBase64Data = $request->image;
+
+        $data = base64_decode($imgBase64Data);
+        $success = file_put_contents($imgPath, $data);
+        if (!$success) {
+            throw new Exception('Error saving image');
+        }
+
+        Attendance::create([
+            'name' => $request->user_name ?? null,
+            'user_id' => $request->user_id ?? null,
+            'sex' => $request->sex ?? null,
+            'image' => 'image/attendance/' . $request->frpic_name,
+            'user_list' => $request->user_list ?? null,
+            'mask' => $request->mask ?? null,
+            'access_card' => $request->access_card ?? null,
+            'snap_timestamp' => Carbon::createFromTimestamp($request->snap_time)->format('Y-m-d H:i:s'),
+        ]);
+
+        $output->writeln("<info>Saved</info>");
+
+        DB::commit();
+    } catch (Exception $e) {
+        DB::rollBack();
+        $output->writeln("<error>Error saving attendance data");
+        $output->writeln("<error>" . $e->getMessage() . "</error>");
+        return response()->json([
+            'message' => 'Error saving attendance data',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+});
 
-    File::append($logFilePath, $responseJson . "\n");
+// Route::get("/{any}", function (Request $request, $any) {
+//     $responseData = [
+//         'requested_method' => 'GET',
+//         'requested_endpoint' => "/" . $any,
+//         'requested_body' => $request->all(),
+//     ];
 
-    return response()->json($responseData, 200);
-})->where('any', '.*');
+//     $responseJson = json_encode($responseData, JSON_PRETTY_PRINT);
 
-Route::post("/{any}", function(Request $request, $any) {
-    $responseData = [
-        'requested_method' => 'POST',
-        'requested_endpoint' => "/" . $any,
-        'requested_body' => $request->all(),
-    ];
+//     $logFilePath = storage_path('logs/endpoint_get_requests.log');
 
-    $responseJson = json_encode($responseData, JSON_PRETTY_PRINT);
+//     if (File::exists($logFilePath)) {
+//         File::append($logFilePath, "\n==============================================================================\n\n");
+//     } else {
+//         File::put($logFilePath, '');
+//     }
 
-    $logFilePath = storage_path('logs/endpoint_post_requests.log');
+//     File::append($logFilePath, $responseJson . "\n");
 
-    if (File::exists($logFilePath)) {
-        File::append($logFilePath, "\n==============================================================================\n\n");
-    } else {
-        File::put($logFilePath, '');
-    }
+//     return response()->json($responseData, 200);
+// })->where('any', '.*');
 
-    File::append($logFilePath, $responseJson . "\n");
+// Route::post("/{any}", function (Request $request, $any) {
+//     $responseData = [
+//         'requested_method' => 'POST',
+//         'requested_endpoint' => "/" . $any,
+//         'requested_body' => $request->all(),
+//     ];
 
-    return response()->json($responseData, 200);
-})->where('any', '.*');
+//     $responseJson = json_encode($responseData, JSON_PRETTY_PRINT);
+
+//     $logFilePath = storage_path('logs/endpoint_post_requests.log');
+
+//     if (File::exists($logFilePath)) {
+//         File::append($logFilePath, "\n==============================================================================\n\n");
+//     } else {
+//         File::put($logFilePath, '');
+//     }
+
+//     File::append($logFilePath, $responseJson . "\n");
+
+//     return response()->json($responseData, 200);
+// })->where('any', '.*');
