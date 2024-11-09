@@ -20,7 +20,7 @@ export default function Dashboard() {
                 }).finally(() => {
                     setPending(false);
                 });
-        }, 1000);
+        }, 500);
     }, []);
     return (
         <AuthLayout>

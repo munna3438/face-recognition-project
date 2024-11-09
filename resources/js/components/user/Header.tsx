@@ -17,6 +17,14 @@ export default function Header() {
                 </li>
                 <li>
                     <NavLink
+                        href={route('users.list-attendances')}
+                        active={route().current('users.list-attendances')}
+                    >
+                        Attendances
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
                         href={route('users.index')}
                         active={route().current('users.index')}
                     >

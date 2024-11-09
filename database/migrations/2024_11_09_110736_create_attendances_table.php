@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('enroll_users', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('userName')->nullable();
-            $table->string('UserID')->nullable();
-            $table->integer('userGender')->nullable();
-            $table->string('userImage')->nullable();
-            $table->integer('status')->default(0);
+            $table->string('user_id');
+            $table->string('name');
+            $table->datetime('in_time')->nullable();
+            $table->datetime('exit_time')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enroll_users');
+        Schema::dropIfExists('attendances');
     }
 };

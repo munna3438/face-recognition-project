@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Attendance;
+use App\Models\AttendanceLogs;
 use App\Models\EnrollUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,8 +48,16 @@ Route::get('/users-list', function(Request $request) {
     return EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status')->get();
 });
 
+Route::post('/user-attendance', function (Request $request) {
+    // $date = Carbon::createFromTimestamp($request->date)->format('Y-m-d');
+    // dd($request->date);
+    $date = $request->date;
+    $attendance = Attendance::select('id', 'user_id', 'name', 'in_time', 'exit_time')->where('created_at', 'like', $date . '%')->get();
+    return response()->json($attendance);
+});
+
 Route::get('/attendances', function (Request $request) {
-    return Attendance::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->get();
+    return AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->get();
 });
 
 //
@@ -69,7 +78,7 @@ Route::post('/faceRecognition', function (Request $request) {
             throw new Exception('Error saving image');
         }
 
-        Attendance::create([
+        AttendanceLogs::create([
             'name' => $request->user_name ?? null,
             'user_id' => $request->user_id ?? null,
             'sex' => $request->sex ?? null,
@@ -79,6 +88,24 @@ Route::post('/faceRecognition', function (Request $request) {
             'access_card' => $request->access_card ?? null,
             'snap_timestamp' => Carbon::createFromTimestamp($request->snap_time)->format('Y-m-d H:i:s'),
         ]);
+
+        if($request->user_id) {
+            $today = Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d');
+            $foundAttendance = Attendance::where('user_id', $request->user_id)->where(
+                'created_at', 'like', $today . '%'
+            )->first();
+            if($foundAttendance) {
+                $foundAttendance->update([
+                    'exit_time' => Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d H:i:s'),
+                ]);
+            } else {
+                Attendance::create([
+                    'user_id' => $request->user_id,
+                    'name' => $request->user_name,
+                    'in_time' => Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d H:i:s'),
+                ]);
+            }
+        }
 
         $output->writeln("<info>Saved</info>");
 

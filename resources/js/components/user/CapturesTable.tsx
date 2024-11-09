@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table"
 import { Capture } from "@/types"
 import ImageModal from "./ImageModal"
+import { format } from "date-fns"
 
 
 export function CapturesTable({ captures } : { captures: Capture[]}) {
@@ -31,7 +32,7 @@ export function CapturesTable({ captures } : { captures: Capture[]}) {
                         <TableCell><ImageModal image={capture.image} /></TableCell>
                         <TableCell>{capture.name ? <b>{capture.name}</b> : (<i className="text-slate-300">Stranger</i>)}</TableCell>
                         <TableCell>{capture.sex !== null ? <b>{['Male', 'Female'][capture.sex]}</b> : (<i className="text-slate-300">unknown</i>)}</TableCell>
-                        <TableCell className="text-right">{capture.snap_timestamp}</TableCell>
+                        <TableCell className="text-right">{format(capture.snap_timestamp, 'yyyy-MM-dd h-m-s a')}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

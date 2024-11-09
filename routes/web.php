@@ -9,12 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
@@ -36,7 +31,7 @@ Route::prefix('/users')->name('users.')->group(function () {
     })->name('add');
     Route::get('/attendance-list', function() {
         return Inertia::render('Users/AttendanceList');
-    });
+    })->name('list-attendances');
 });
 
 
