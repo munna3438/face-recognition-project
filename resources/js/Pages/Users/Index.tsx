@@ -1,42 +1,40 @@
+import { CapturesTable } from "@/components/user/CapturesTable";
+import { UsersTable } from "@/components/user/UsersTable";
 import AuthLayout from "@/Layouts/AuthLayout";
+import { FaceUser } from "@/types";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 
 export default function Dashboard() {
+
+    const [users, setUsers] = useState<FaceUser[]>([]);
+    const [pending, setPending] = useState<boolean>(true);
+
+    useEffect(() => {
+        setInterval(() => {
+            fetch("/api/users-list")
+                .then((res) => res.json())
+                .then((data) => {
+                    setUsers(data.reverse());
+                }).finally(() => {
+                    setPending(false);
+                });
+        }, 1000);
+    }, []);
     return (
         <AuthLayout>
-            <div className="hx-container p-5">
-                <h1 className="text-2xl font-bold mb-4">User List</h1>
-                <table className="min-w-full border border-white">
-                    <thead>
-                        <tr className="border border-white text-left font-bold text-xl">
-                            <th className="p-2">User Name</th>
-                            <th className="p-2">User ID</th>
-                            <th className="p-2">Image</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="border border-white ">
-                            <td className="p-2">John Doe</td>
-                            <td className="p-2">123456</td>
-                            <td className="p-2">
-                                <img src="#" alt="John Doe" />
-                            </td>
-                        </tr>
-                        <tr className="border border-white">
-                            <td className="p-2">John Doe</td>
-                            <td className="p-2">123456</td>
-                            <td className="p-2">
-                                <img
-                                    className="h-[40px] w-auto"
-                                    src="/image/userPlaceholder.jpg"
-                                    alt="John Doe"
-                                />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div className="flex justify-between items-center mb-10">
+                <h2 className="text-xl font-bold ml-4">Users List</h2>
             </div>
+            <div className="relative top-14">
+                {pending && (
+                    <div className="w-full h-14 absolute flex justify-center items-center">
+                        <FaSpinner className="text-2xl animate-spin" />
+                    </div>
+                )}
+            </div>
+            <UsersTable users={users} />
         </AuthLayout>
     );
 }

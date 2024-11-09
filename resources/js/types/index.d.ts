@@ -19,6 +19,36 @@ export interface Capture {
     user_id: string;
     name: string;
     image: string;
-    sex: number|null;
+    sex: number | null;
     snap_timestamp: string;
 }
+
+export interface FaceUser {
+    id: number;
+    UserID: string;
+    userName: string;
+    userImage: string;
+    userGender: number;
+    status: number;
+}
+
+
+export type AddUserResponse = {
+    error: boolean;
+    message: string;
+    errors?: Array<string>;
+};
+
+export type AddUserFormData = {
+    user_name: string;
+    user_id: string;
+    gender: string;
+    image: File;
+};
+
+export type AddUserFormDataError = {
+    user_name: string;
+    user_id: string;
+    gender: string;
+    image: string;
+};

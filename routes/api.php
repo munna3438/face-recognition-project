@@ -1,21 +1,58 @@
 <?php
 
 use App\Models\Attendance;
-use App\Models\enrollUser;
+use App\Models\EnrollUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+
+//
+
+Route::post('/add_user', function (Request $request) {
+    DB::beginTransaction();
+    try {
+        $file = $request->file('image');
+        $imagePath = storeImage($file, '/users/');
+
+        EnrollUser::create([
+            'userName' => $request->user_name,
+            'UserID' => $request->user_id,
+            'userGender' => $request->gender,
+            'userImage' => $imagePath,
+        ]);
+
+        DB::commit();
+        return response()->json(['error' => false, 'message' => 'User saved successfully'], 200);
+
+    } catch(Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'error' => true,
+            'message' => 'Error saving user data',
+            'errors' => $e->getMessage()
+        ], 500);
+    }
+})->name('store');
+
+Route::get('/users-list', function(Request $request) {
+    return EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status')->get();
+});
+
 Route::get('/attendances', function (Request $request) {
     return Attendance::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->get();
 });
+
+//
+
 
 Route::post('/faceRecognition', function (Request $request) {
     $output = new ConsoleOutput();
@@ -58,49 +95,54 @@ Route::post('/faceRecognition', function (Request $request) {
 });
 
 Route::post('/taskRequest', function (Request $request) {
-    DB::beginTransaction();
+    $output = new ConsoleOutput();
     try {
-        $enrollUsers = enrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('status', 1)->get();
-        if($enrollUsers->count() > 0){
+        $enrollUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('status', 0);
+        if ($enrollUser->exists()) {
+            $enrollUser = $enrollUser->first();
             $request_id = rand(11111111, 99999999);
             $request_type = "addUser";
             $user_list = [
-
+                [
+                    'user_id' => $enrollUser->UserID,
+                    'image_type' => 'image',
+                    'image_content' => base64_encode(file_get_contents(asset($enrollUser->userImage))),
+                    'user_info' => [
+                        'name' => $enrollUser->userName,
+                        'sex' => $enrollUser->userGender,
+                    ]
+                ]
             ];
-
+            $res = [
+                'request_id' => $request_id,
+                'request_type' => $request_type,
+                'user_list' => $user_list,
+            ];
+            $output->writeln("<info>Userdata Sent to camera</info> ");
+            return response()->json($res);
         }
-        DB::commit();
     } catch (Exception $e) {
-        DB::rollBack();
+        $output->writeln("<error>Error sanding user data to camera");
+        $output->writeln("<error>" . $e->getMessage() . "</error>");
         return response()->json([
-            'message' => 'Error saving attendance data',
+            'message' => 'Error sanding user data',
             'error' => $e->getMessage(),
         ], 500);
     }
 });
 
 
-// Route::get("/{any}", function (Request $request, $any) {
-//     $responseData = [
-//         'requested_method' => 'GET',
-//         'requested_endpoint' => "/" . $any,
-//         'requested_body' => $request->all(),
-//     ];
-
-//     $responseJson = json_encode($responseData, JSON_PRETTY_PRINT);
-
-//     $logFilePath = storage_path('logs/endpoint_get_requests.log');
-
-//     if (File::exists($logFilePath)) {
-//         File::append($logFilePath, "\n==============================================================================\n\n");
-//     } else {
-//         File::put($logFilePath, '');
-//     }
-
-//     File::append($logFilePath, $responseJson . "\n");
-
-//     return response()->json($responseData, 200);
-// })->where('any', '.*');
+Route::post('/taskResult', function(Request $request) {
+    $output = new ConsoleOutput();
+    try {
+        $user_id = $request->resp_list[0]['user_id'];
+        EnrollUser::where('UserID', $user_id)->update(['status' => 1]);
+        $output->writeln("<info>User status updated</info> ");
+        return response()->json($request->all());
+    } catch(Exception $e) {
+        return response()->json([]);
+    }
+});
 
 // Route::post("/{any}", function (Request $request, $any) {
 //     $responseData = [

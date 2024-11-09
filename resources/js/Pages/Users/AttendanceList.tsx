@@ -8,13 +8,13 @@ import { Capture } from '@/types';
 import React, { useEffect, useState } from 'react'
 import { FaSpinner } from 'react-icons/fa';
 
-export default function Dashboard() {
+export default function AttendanceList() {
     const [attendances, setAttendances] = useState<Capture[]>([]);
     const [pending, setPending] = useState<boolean>(true);
 
     useEffect(() => {
         setInterval(() => {
-            fetch('/api/attendances')
+            fetch('/api/user-attendance')
                 .then(res => res.json())
                 .then(data => {
                     console.log(data)
@@ -28,7 +28,7 @@ export default function Dashboard() {
     return (
         <AuthLayout>
             <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xl font-bold ml-4">Live Face Recognition</h2>
+                <h2 className="text-xl font-bold ml-4">Attendance List</h2>
             </div>
             <div className="relative top-14">
                 {pending && (
