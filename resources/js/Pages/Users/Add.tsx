@@ -10,7 +10,12 @@ export default function Dashboard() {
         <AuthLayout>
             <div className="hx-container p-5">
                 <h1 className="text-2xl font-bold mb-4">Add User</h1>
-                <form action="#" method="POST" className="flex flex-col gap-3">
+                <form
+                    action={route("users.store")}
+                    method="POST"
+                    className="flex flex-col gap-3"
+                    encType="multipart/form-data"
+                >
                     <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="userName">Name</label>
@@ -32,12 +37,6 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="userGender">Gender</label>
-                            {/* <input
-                                type="text"
-                                name="userGender"
-                                id="userGender"
-                                className="p-2 border focus:ring-0 border-gray-300 rounded text-[#333]"
-                            /> */}
                             <select
                                 name="userGender"
                                 id="userGender"
@@ -67,7 +66,12 @@ export default function Dashboard() {
                                     src={uploadedfile}
                                 />
                             ) : (
-                                <IoPersonCircleOutline className="h-full w-full" />
+                                // <IoPersonCircleOutline className="h-full w-full" />
+                                <img
+                                    src="/image/userPlaceholder.jpg"
+                                    className="h-full w-full"
+                                    alt=""
+                                />
                             )}
                         </div>
                     </div>
