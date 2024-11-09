@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Attendance;
+use App\Models\enrollUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,29 @@ Route::post('/faceRecognition', function (Request $request) {
         ], 500);
     }
 });
+
+Route::post('/taskRequest', function (Request $request) {
+    DB::beginTransaction();
+    try {
+        $enrollUsers = enrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('status', 1)->get();
+        if($enrollUsers->count() > 0){
+            $request_id = rand(11111111, 99999999);
+            $request_type = "addUser";
+            $user_list = [
+
+            ];
+
+        }
+        DB::commit();
+    } catch (Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Error saving attendance data',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+});
+
 
 // Route::get("/{any}", function (Request $request, $any) {
 //     $responseData = [
