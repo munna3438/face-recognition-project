@@ -14,3 +14,13 @@ function storeImage($image, $path): bool|string
         return false;
     }
 }
+
+
+function writeLog($string, $file = "logs.txt"): void
+{
+    file_put_contents(
+        storage_path() . "/logs/" . $file,
+        $string . PHP_EOL,
+        FILE_APPEND | LOCK_EX
+     );
+}

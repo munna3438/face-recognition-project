@@ -17,24 +17,28 @@ export default function AttendanceList() {
     useEffect(() => {
         setPending(true);
         setAttendances([]);
-        setInterval(() => {
-            fetch('/api/user-attendance/', {
-                method: 'POST',
+
+        const intervalId = setInterval(() => {
+            const formattedDate = format(date, 'yyyy-MM-dd');
+
+            fetch(`/api/user-attendance?date=${formattedDate}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    date: format(date, 'yyyy-MM-dd')
-                })
+                }
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
-                    setAttendances(data.reverse());
-                }).finally(() => {
+                    console.log(data);
+                    setAttendances(data.data.reverse());
+                })
+                .finally(() => {
                     setPending(false);
                 });
         }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, [date]);
 
     return (

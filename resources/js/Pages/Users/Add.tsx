@@ -120,6 +120,7 @@ export default function Dashboard() {
             .then((response: Response) => response.json())
             .then((response: AddUserResponse) => {
                 if (!response.error) {
+                    router.visit("/users");
                     Swal.fire({
                         icon: "success",
                         title: "User has been saved",

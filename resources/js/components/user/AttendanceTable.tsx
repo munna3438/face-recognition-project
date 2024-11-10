@@ -26,7 +26,7 @@ export function AttendanceTable({ attendances }: { attendances: Attendances[] })
                         <TableCell className="font-medium"><b>{attendance.user_id}</b></TableCell>
                         <TableCell><b>{attendance.name}</b></TableCell>
                         <TableCell><b>{format(attendance.in_time, 'yyyy-MM-dd h-m-s a')}</b></TableCell>
-                        <TableCell>{attendance.exit_time ? format(attendance.exit_time, 'yyyy-MM-dd h-m-s a') : <i>N/A</i>}</TableCell>
+                        <TableCell>{attendance.exit_time ? format(attendance.exit_time, 'yyyy-MM-dd h:m:s a') : <i>N/A</i>}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

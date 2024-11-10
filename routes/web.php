@@ -32,7 +32,7 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/attendance-list', function() {
         return Inertia::render('Users/AttendanceList');
     })->name('list-attendances');
-});
+})->middleware(['auth', 'verified']);
 
 
 require __DIR__ . '/auth.php';
