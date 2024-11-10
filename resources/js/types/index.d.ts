@@ -34,10 +34,12 @@ export interface Capture {
 export interface FaceUser {
     id: number;
     UserID: string;
-    userName: string;
     userImage: string;
+    userName: string;
     userGender: number;
     status: number;
+    log: string;
+    institute: string;
 }
 
 
@@ -52,6 +54,7 @@ export type AddUserFormData = {
     user_id: string;
     gender: string;
     image: File;
+    institute: string;
 };
 
 export type AddUserFormDataError = {
@@ -59,4 +62,5 @@ export type AddUserFormDataError = {
     user_id: string;
     gender: string;
     image: string;
+    institute: string;
 };

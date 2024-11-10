@@ -1,5 +1,3 @@
-
-import { AttendanceTable } from '@/components/user/AttendanceTable';
 import DatePicker from '@/components/user/DatePicker';
 import AuthLayout from '@/Layouts/AuthLayout';
 import { Attendances } from '@/types';
@@ -8,6 +6,7 @@ import { format } from "date-fns"
 
 import React, { useEffect, useState } from 'react'
 import { FaSpinner } from 'react-icons/fa';
+import AttendanceTable from '@/components/user/AttendanceTable';
 
 export default function AttendanceList() {
     const [attendances, setAttendances] = useState<Attendances[]>([]);
@@ -28,7 +27,6 @@ export default function AttendanceList() {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
                     setAttendances(data.data.reverse());
                 })
                 .finally(() => {
@@ -43,8 +41,8 @@ export default function AttendanceList() {
 
     return (
         <AuthLayout>
-            <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xl font-bold ml-4">Attendance List</h2>
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">Attendance List</h2>
                 <DatePicker date={date} setDate={setDate} />
             </div>
             <div className="relative top-14">
@@ -55,6 +53,7 @@ export default function AttendanceList() {
                 )}
             </div>
             <AttendanceTable attendances={attendances} />
+            {/* <OldAttendanceTable attendances={attendances} /> */}
         </AuthLayout>
     )
 }

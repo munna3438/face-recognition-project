@@ -24,6 +24,7 @@ export default function Dashboard() {
         user_id: "",
         gender: "",
         image: "",
+        institute: ""
     });
 
     const [formData, setFormData] = useState<AddUserFormData>({
@@ -31,6 +32,7 @@ export default function Dashboard() {
         user_id: "",
         gender: "",
         image: new File([], ""),
+        institute: ""
     });
 
     const [uploadedfile, setUploadImage] = useState<string>();
@@ -71,12 +73,19 @@ export default function Dashboard() {
             user_id: "",
             gender: "",
             image: "",
+            institute: ""
         };
         if (formData.user_name === "") {
             errors.user_name = "Please enter a name";
             isValid = false;
         } else {
             errors.user_name = "";
+        }
+        if (formData.institute === "") {
+            errors.institute = "Please enter an institute name";
+            isValid = false;
+        } else {
+            errors.institute = "";
         }
         if (formData.user_id === "") {
             errors.user_id = "Please enter a user id";
@@ -111,6 +120,7 @@ export default function Dashboard() {
         dataForm.append("user_name", formData.user_name);
         dataForm.append("user_id", formData.user_id);
         dataForm.append("gender", formData.gender);
+        dataForm.append("institute", formData.institute);
         dataForm.append("image", formData.image);
 
         fetch("/api/add_user", {
@@ -153,7 +163,7 @@ export default function Dashboard() {
                 className="flex flex-col gap-3"
                 encType="multipart/form-data"
             >
-                <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     <div className="flex flex-col gap-1">
                         <label htmlFor="user_name">Name</label>
                         <Input
@@ -164,6 +174,18 @@ export default function Dashboard() {
                         />
                         <div className="text-sm text-red-500">
                             {formDataErrors.user_name}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="institute">Institute Name</label>
+                        <Input
+                            type="text"
+                            name="institute"
+                            id="institute"
+                            onChange={handleChange}
+                        />
+                        <div className="text-sm text-red-500">
+                            {formDataErrors.institute}
                         </div>
                     </div>
                     <div className="flex flex-col gap-1">
@@ -222,7 +244,7 @@ export default function Dashboard() {
                         )}
                     </div>
                 </div>
-                <div className="flex gap-3 justify-end items-center">
+                <div className="flex gap-3 mt-4 md:mt-0 justify-center md:justify-end items-center">
                     {formLoading && (
                         <FaSpinner className="text-lg animate-spin" />
                     )}

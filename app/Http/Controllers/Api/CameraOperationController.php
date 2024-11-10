@@ -132,7 +132,7 @@ class CameraOperationController extends Controller
                     if ($code > 0) {
                         $enrollUser->update([
                             'status' => 1,
-                            'log' => $code == 202 ? "" : $code
+                            'log' => ""
                         ]);
                         return response()->json($request->all());
                     } else {

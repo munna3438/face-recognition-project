@@ -1,9 +1,8 @@
-import { CapturesTable } from "@/components/user/CapturesTable";
-import { UsersTable } from "@/components/user/UsersTable";
+import UsersTable from "@/components/user/UsersTable";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { FaceUser } from "@/types";
-
-import React, { useEffect, useState } from "react";
+import { isEqual } from "lodash";
+import { useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 
 export default function Dashboard() {
@@ -11,25 +10,34 @@ export default function Dashboard() {
     const [users, setUsers] = useState<FaceUser[]>([]);
     const [pending, setPending] = useState<boolean>(true);
 
+    const prevUsersRef = useRef<FaceUser[]>([]);
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             fetch("/api/users-list")
                 .then((res) => res.json())
-                .then((data) => {
-                    setUsers(data.reverse());
-                }).finally(() => {
+                .then((data: FaceUser[]) => {
+                    const isDataDifferent = !isEqual(data, prevUsersRef.current);
+
+                    if (isDataDifferent) {
+                        setUsers(data.reverse());
+                        prevUsersRef.current = data;
+                    }
+                })
+                .finally(() => {
                     setPending(false);
                 });
-        }, 500);
+        }, 1500);
 
         return () => {
             clearInterval(intervalId);
-        }
+        };
     }, []);
+
     return (
         <AuthLayout>
-            <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xl font-bold ml-4">Users List</h2>
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">Users List</h2>
             </div>
             <div className="relative top-14">
                 {pending && (
