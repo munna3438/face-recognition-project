@@ -26,8 +26,6 @@ Route::get('/users-list', [FaceUserController::class, 'userList']);
 Route::get('/user-attendance', [FaceUserController::class, 'userAttendance']);
 Route::get('/attendances', [FaceUserController::class, 'attendanceLog']);
 
-
-
 Route::post('/faceRecognition', [CameraOperationController::class, 'faceRecognition']);
 Route::post('/taskRequest', [CameraOperationController::class, 'taskRequest']);
 Route::post('/taskResult', [CameraOperationController::class, 'taskResult']);
