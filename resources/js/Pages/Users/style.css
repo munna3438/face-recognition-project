@@ -1,0 +1,19 @@
+/* .file_input_field[type="file"] {
+    color: white;
+    background-color: blue;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+} */
+.file_input_field[type="file"] {
+    /* display: none; */
+    display: flex;
+    align-items: center;
+}
+.file_input_field::file-selector-button {
+    color: #333;
+    background-color: #f3f4f6;
+    padding: 3px;
+
+    border-radius: 5px;
+}

@@ -1,5 +1,5 @@
-import { InertiaLinkProps, Link } from '@inertiajs/react';
-import { cn } from '@/lib/utils';
+import { InertiaLinkProps, Link } from "@inertiajs/react";
+import { cn } from "@/lib/utils";
 
 // export default function NavLink({
 //     active = false,
@@ -25,23 +25,21 @@ import { cn } from '@/lib/utils';
 
 export default function NavLink({
     active = false,
-    className = '',
+    className = "",
     children,
     ...props
 }: InertiaLinkProps & { active: boolean }) {
     return (
         <Link
             {...props}
-            className={
-                cn(
-                    "hover:underline text-sm",
-                    {
-                        "font-bold": active,
-                        "text-gray-400": !active
-                    },
-                    className
-                )
-            }
+            className={cn(
+                "hover:underline text-md ",
+                {
+                    "font-bold": active,
+                    "text-gray-400": !active,
+                },
+                className
+            )}
         >
             {children}
         </Link>

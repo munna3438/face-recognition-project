@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 
 export default function Dashboard() {
-
     const [users, setUsers] = useState<FaceUser[]>([]);
     const [pending, setPending] = useState<boolean>(true);
 
@@ -17,17 +16,18 @@ export default function Dashboard() {
                 .then((res) => res.json())
                 .then((data) => {
                     setUsers(data.reverse());
-                }).finally(() => {
+                })
+                .finally(() => {
                     setPending(false);
                 });
         }, 1000);
     }, []);
     return (
         <AuthLayout>
-            <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xl font-bold ml-4">Users List</h2>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold ">Users List</h2>
             </div>
-            <div className="relative top-14">
+            <div className="relative top-14 ">
                 {pending && (
                     <div className="w-full h-14 absolute flex justify-center items-center">
                         <FaSpinner className="text-2xl animate-spin" />
