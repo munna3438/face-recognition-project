@@ -47,7 +47,7 @@ export default function AttendanceList() {
     return (
         <AuthLayout>
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold">Attendance List</h2>
+                <h2 className="text-2xl font-bold ">Attendance List</h2>
                 <DatePicker date={date} setDate={setDate} />
             </div>
             <div className="relative top-14">

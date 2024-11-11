@@ -1,19 +1,24 @@
+import React, { useEffect } from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
 
-import React, { useEffect } from "react"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import { SelectSingleEventHandler } from "react-day-picker"
+} from "@/components/ui/popover";
+import { SelectSingleEventHandler } from "react-day-picker";
 
-export default function DatePicker({ date, setDate }: { date: Date | undefined, setDate: any }) {
+export default function DatePicker({
+    date,
+    setDate,
+}: {
+    date: Date | undefined;
+    setDate: any;
+}) {
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -24,7 +29,7 @@ export default function DatePicker({ date, setDate }: { date: Date | undefined, 
                         !date && "text-muted-foreground"
                     )}
                 >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="mr-2 h-3 w-4" />
                     {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
@@ -33,10 +38,9 @@ export default function DatePicker({ date, setDate }: { date: Date | undefined, 
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-
                     initialFocus
                 />
             </PopoverContent>
         </Popover>
-    )
+    );
 }

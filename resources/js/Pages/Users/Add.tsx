@@ -194,14 +194,14 @@ export default function Dashboard() {
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
-            <div className="bg-gray-100 p-7 rounded-md">
+            <div className="bg-gray-100 p-3 md:p-7 rounded-md">
                 <form
                     ref={formRef}
                     onSubmit={handleFormSubmit}
                     className="flex flex-col gap-3"
                     encType="multipart/form-data"
                 >
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-6 ">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 ">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="user_name">Name</label>
                             <div className="relative">
@@ -237,11 +237,11 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="image">Image</label>
-                            <div className="w-full bg-white rounded-sm h-10 flex justify-between items-center gap-4 p-2">
+                            <div className="w-full bg-white rounded-sm h-10 flex justify-between items-center gap-2 md:gap-4 p-2">
                                 {/* Button to open the camera */}
                                 <button
                                     onClick={startCamera}
-                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
+                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-2 md:px-3 rounded-sm w-1/2"
                                     disabled={isCameraOpen}
                                 >
                                     Take Image
@@ -253,7 +253,7 @@ export default function Dashboard() {
                                     onClick={(e) =>
                                         document.getElementById("image").click()
                                     }
-                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
+                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-2 md:px-3 rounded-sm w-1/2"
                                 >
                                     Browse
                                 </button>
@@ -278,7 +278,7 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center mt-6">
+                    <div className="flex flex-col gap-4 md:flex-row justify-between items-center mt-6">
                         <div>
                             <div className="h-[100px] aspect-square border rounded-sm border-gray-300 relative bg-white">
                                 {capturedImage ? (
