@@ -11,7 +11,7 @@ export default function Dashboard() {
     const [pending, setPending] = useState<boolean>(true);
 
     useEffect(() => {
-        setInterval(() => {
+        const intervalId = setInterval(() => {
             fetch("/api/users-list")
                 .then((res) => res.json())
                 .then((data) => {
@@ -20,7 +20,11 @@ export default function Dashboard() {
                 .finally(() => {
                     setPending(false);
                 });
-        }, 1000);
+        }, 500);
+
+        return () => {
+            clearInterval(intervalId);
+        }
     }, []);
     return (
         <AuthLayout>

@@ -14,10 +14,16 @@ export default function Login({
     status?: string;
     canResetPassword: boolean;
 }) {
+
+    const csrfElement = document.querySelector<Element>('meta[name="csrf-token"]');
+    const token = csrfElement ? csrfElement.getAttribute('content') : null;
+
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
+        _token: token,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -47,7 +53,7 @@ export default function Login({
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full text-black"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -64,7 +70,7 @@ export default function Login({
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full text-black"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
                     />

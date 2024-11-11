@@ -7,13 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     protected $fillable = [
-        'name',
         'user_id',
-        'sex',
-        'image',
-        'user_list',
-        'mask',
-        'access_card',
-        'snap_timestamp',
+        'name',
+        'in_time',
+        'exit_time',
     ];
+
+    protected $casts = [
+        'in_time' => 'datetime',
+        'exit_time' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(EnrollUser::class, 'user_id', 'UserID');
+    }
 }

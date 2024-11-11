@@ -11,7 +11,7 @@ export default function Dashboard() {
     const [pending, setPending] = useState<boolean>(true);
 
     useEffect(() => {
-        setInterval(() => {
+        const intervalId = setInterval(() => {
             fetch("/api/attendances")
                 .then((res) => res.json())
                 .then((data) => {
@@ -22,6 +22,10 @@ export default function Dashboard() {
                     setPending(false);
                 });
         }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     return (

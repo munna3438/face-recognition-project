@@ -14,6 +14,14 @@ export type PageProps<
 };
 
 
+export interface Attendances {
+    id: number;
+    user_id: string;
+    name: string;
+    in_time: Date;
+    exit_time: Date|null;
+}
+
 export interface Capture {
     id: string;
     user_id: string;

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Capture } from "@/types";
 import ImageModal from "./ImageModal";
+import { format } from "date-fns";
 
 export function CapturesTable({ captures }: { captures: Capture[] }) {
     return (
@@ -55,7 +56,10 @@ export function CapturesTable({ captures }: { captures: Capture[] }) {
                             )}
                         </TableCell>
                         <TableCell className="text-right">
-                            {capture.snap_timestamp}
+                            {format(
+                                capture.snap_timestamp,
+                                "yyyy-MM-dd h:m:s a"
+                            )}
                         </TableCell>
                     </TableRow>
                 ))}
