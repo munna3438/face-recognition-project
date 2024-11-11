@@ -1,4 +1,5 @@
 import NavLink from "@/Components/NavLink";
+import { ThemeToggle } from "../theme-toggle";
 
 export default function Header() {
     return (
@@ -47,6 +48,9 @@ export default function Header() {
                         Face Detections
                     </NavLink>
                 </li> */}
+                <li>
+                    <ThemeToggle />
+                </li>
             </ul>
         </div>
     );

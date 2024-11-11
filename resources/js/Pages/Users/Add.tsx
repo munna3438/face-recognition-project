@@ -22,6 +22,7 @@ import {
     AddUserResponse,
 } from "@/types";
 import Swal from "sweetalert2";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
     const formRef = useRef<HTMLFormElement>(null);
@@ -62,10 +63,10 @@ export default function Dashboard() {
             }));
             return;
         }
-        const file = e.target.files[0];
+        const file = e.target.files?.[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = () => setCapturedImage(reader.result);
+            reader.onload = () => setCapturedImage(reader.result as string);
             reader.readAsDataURL(file);
         }
         const key = e.target.id;
@@ -127,6 +128,8 @@ export default function Dashboard() {
     function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!validateForm()) {
+            console.log(formDataErrors)
+            console.log('not valid');
             return;
         }
         setFormLoading(true);
@@ -175,8 +178,8 @@ export default function Dashboard() {
 
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [capturedImage, setCapturedImage] = useState(null);
-    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [capturedImage, setCapturedImage] = useState<string>("");
+    const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
 
     // Function to start the camera
     const startCamera = async () => {
@@ -185,7 +188,7 @@ export default function Dashboard() {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
             });
-            if(videoRef.current) {
+            if (videoRef.current) {
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
             }
@@ -202,29 +205,32 @@ export default function Dashboard() {
     // Function to capture the image from the video feed
     const capturePhoto = () => {
         const canvas = canvasRef.current;
-        if(canvas) {
+        if (canvas) {
             const context = canvas.getContext("2d");
-            context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-            const imageData = canvas.toDataURL("image/png");
-            setCapturedImage(imageData);
-            stopCamera();
+            if (context && videoRef.current) {
+                context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL("image/png");
+                setCapturedImage(imageData);
+                stopCamera();
+            }
         }
     };
 
     // Function to stop the camera after capturing
     const stopCamera = () => {
-        if(videoRef.current) {
-            const stream = videoRef.current.srcObject;
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
             const tracks = stream.getTracks();
             tracks.forEach((track) => track.stop());
             videoRef.current.srcObject = null;
             setIsCameraOpen(false);
         }
     };
+
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
-            <div className="bg-gray-100 p-7 rounded-md">
+            <div className="bg-gray-100 dark:bg-opacity-10 p-7 rounded-md">
                 <form
                     ref={formRef}
                     onSubmit={handleFormSubmit}
@@ -242,10 +248,22 @@ export default function Dashboard() {
                                     onChange={handleChange}
                                     className="pl-10"
                                 />
-                                <CiUser className="absolute bottom-[10px] left-2  bg-gray-100 h-5 w-5 rounded-sm" />
+                                <CiUser className="absolute bottom-[10px] left-2  bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
                             </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.user_name}
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="institute">Institute Name</label>
+                            <Input
+                                type="text"
+                                name="institute"
+                                id="institute"
+                                onChange={handleChange}
+                            />
+                            <div className="text-sm text-red-500">
+                                {formDataErrors.institute}
                             </div>
                         </div>
                         <div className="flex flex-col gap-1 ">
@@ -258,7 +276,7 @@ export default function Dashboard() {
                                     onChange={handleChange}
                                     className="pl-10"
                                 />
-                                <MdOutlineContactPage className="absolute bottom-[10px] left-2  bg-gray-100 h-5 w-5 rounded-sm" />
+                                <MdOutlineContactPage className="absolute bottom-[10px] left-2  bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
                             </div>
 
                             <div className="text-sm text-red-500">
@@ -267,27 +285,31 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="image">Image</label>
-                            <div className="w-full bg-white rounded-sm h-10 flex justify-between items-center gap-4 p-2">
+                            <div className="w-full bg-white dark:bg-opacity-10 rounded-sm flex justify-between items-center gap-4 px-2 py-1">
                                 {/* Button to open the camera */}
-                                <button
+                                <Button
+                                    size="sm"
+                                    className="w-full"
                                     onClick={startCamera}
-                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
+                                    // className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
                                     disabled={isCameraOpen}
                                     type="button"
                                 >
                                     Take Image
-                                </button>
+                                </Button>
 
                                 {/* Button to browse for an image file */}
-                                <button
+                                <Button
+                                    size="sm"
+                                    className="w-full my-1"
                                     type="button"
                                     onClick={(e) =>
-                                        document.getElementById("image").click()
+                                        document.getElementById("image")!.click()
                                     }
-                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
+                                // className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
                                 >
                                     Browse
-                                </button>
+                                </Button>
                             </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.image}
