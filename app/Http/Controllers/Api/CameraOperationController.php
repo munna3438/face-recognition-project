@@ -129,7 +129,7 @@ class CameraOperationController extends Controller
                     $user_id = $request->resp_list[0]['user_id'];
                     $code = $request->resp_list[0]['code'];
                     $enrollUser = EnrollUser::where('UserID', $user_id);
-                    if ($code > 0) {
+                    if ($code == 0) {
                         $enrollUser->update([
                             'status' => 1,
                             'log' => ""
@@ -137,7 +137,7 @@ class CameraOperationController extends Controller
                         return response()->json($request->all());
                     } else {
                         $enrollUser->update([
-                            'log' => "Could not save user. Code: " . $code
+                            'log' => "Code: " . $code . " | Message: " . getErrorMsgFromCode($code)
                         ]);
                     }
                     break;
