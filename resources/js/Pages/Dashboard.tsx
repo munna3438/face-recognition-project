@@ -52,5 +52,5 @@ export default function Dashboard() {
             {/* <CapturesTable captures={attendances} /> */}
             <BakCapturesTable captures={attendances} />
         </AuthLayout>
-    )
+    );
 }

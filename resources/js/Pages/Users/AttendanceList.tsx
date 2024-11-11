@@ -11,19 +11,19 @@ import AttendanceTable from '@/components/user/AttendanceTable';
 export default function AttendanceList() {
     const [attendances, setAttendances] = useState<Attendances[]>([]);
     const [pending, setPending] = useState<boolean>(true);
-    const [date, setDate] = useState<Date>(new Date())
+    const [date, setDate] = useState<Date>(new Date());
 
     useEffect(() => {
         setPending(true);
         setAttendances([]);
 
         const intervalId = setInterval(() => {
-            const formattedDate = format(date, 'yyyy-MM-dd');
+            const formattedDate = format(date, "yyyy-MM-dd");
 
             fetch(`/api/user-attendance?date=${formattedDate}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                }
+                    "Content-Type": "application/json",
+                },
             })
                 .then(res => res.json())
                 .then(data => {
@@ -55,5 +55,5 @@ export default function AttendanceList() {
             <AttendanceTable attendances={attendances} />
             {/* <OldAttendanceTable attendances={attendances} /> */}
         </AuthLayout>
-    )
+    );
 }
