@@ -21,7 +21,8 @@ class CameraOperationController extends Controller
         DB::beginTransaction();
         try {
 
-            if(!Institute::where('token', $token)->exists()) {
+            $institute = Institute::where('token', $token);
+            if(!$institute->exists()) {
                 throw new Exception('Invalid token');
                 return;
             }
@@ -45,13 +46,13 @@ class CameraOperationController extends Controller
                 'mask' => $request->mask ?? null,
                 'access_card' => $request->access_card ?? null,
                 'snap_timestamp' => Carbon::createFromTimestamp($request->snap_time)->format('Y-m-d H:i:s'),
-                'institute_token' => $token,
+                'institute_id' => $institute->first()->id,
             ]);
 
             if ($request->user_id) {
                 $today = Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d');
                 $foundAttendance = Attendance::where('user_id', $request->user_id)
-                    ->where('institute_token', $token)
+                    ->where('institute_id', $institute->first()->id)
                     ->where(
                         'created_at',
                         'like',
@@ -66,7 +67,7 @@ class CameraOperationController extends Controller
                         'user_id' => $request->user_id,
                         'name' => $request->user_name,
                         'in_time' => Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d H:i:s'),
-                        'institute_token' => $token,
+                        'institute_id' => $institute->first()->id,
                     ]);
                 }
             }
@@ -91,12 +92,14 @@ class CameraOperationController extends Controller
     {
         $output = new ConsoleOutput();
         try {
-            if(!Institute::where('token', $token)->exists()) {
+            $institute = Institute::where('token', $token);
+
+            if(!$institute->exists()) {
                 throw new Exception('Invalid token');
                 return;
             }
 
-            $enrollUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_token', $token)->where('status', 0);
+            $enrollUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_id', $institute->first()->id)->where('status', 0);
 
             if ($enrollUser->exists()) {
                 $enrollUser = $enrollUser->first();
@@ -138,7 +141,9 @@ class CameraOperationController extends Controller
     {
         $output = new ConsoleOutput();
         try {
-            if(!Institute::where('token', $token)->exists()) {
+            $institute = Institute::where('token', $token);
+
+            if(!$institute->exists()) {
                 throw new Exception('Invalid token');
                 return;
             }
@@ -147,7 +152,7 @@ class CameraOperationController extends Controller
                 case 'addUser':
                     $user_id = $request->resp_list[0]['user_id'];
                     $code = $request->resp_list[0]['code'];
-                    $enrollUser = EnrollUser::where('UserID', $user_id)->where('institute_token', $token);
+                    $enrollUser = EnrollUser::where('UserID', $user_id)->where('institute_id', $institute->first()->id);
                     if ($code == 0) {
                         $enrollUser->update([
                             'status' => 1,

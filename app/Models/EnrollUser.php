@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EnrollUser extends Model
 {
-    protected $fillable = ['userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_token'];
+    protected $fillable = ['userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_id'];
 
     protected static function booted()
     {
@@ -18,6 +18,6 @@ class EnrollUser extends Model
 
     public function institute()
     {
-        return $this->belongsTo(Institute::class, 'institute_token', 'token');
+        return $this->belongsTo(Institute::class);
     }
 }

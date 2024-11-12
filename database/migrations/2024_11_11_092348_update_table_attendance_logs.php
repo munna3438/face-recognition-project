@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('attendance_logs', function (Blueprint $table) {
-            $table->string('institute_token')->after('snap_timestamp')->nullable();
+            $table->string('institute_id')->after('snap_timestamp')->nullable();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('attendance_logs', function (Blueprint $table) {
-            $table->dropColumn('institute_token');
+            $table->dropColumn('institute_id');
         });
     }
 };

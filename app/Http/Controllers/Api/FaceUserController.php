@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\AttendanceLogs;
 use App\Models\EnrollUser;
+use App\Models\Institute;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class FaceUserController extends Controller
     public function userList(Request $request)
     {
         try {
-            $users = EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_token')->where('institute_token', $request->query('token'))->get();
+            $institute = Institute::where('token', $request->input('token'))->first();
+            $users = EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_id')->where('institute_id', $institute->id)->orderBy('id', 'desc')->get();
             return response()->json(['error' => false, 'message' => 'User list', 'data' => $users], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -60,12 +62,14 @@ class FaceUserController extends Controller
             $file = $request->file('image');
             $imagePath = storeImage($file, '/users/');
 
+            $institute = Institute::where('token', $request->input('token'))->first();
+
             EnrollUser::create([
                 'userName' => $request->user_name,
                 'UserID' => $request->user_id,
                 'userGender' => $request->gender,
                 'userImage' => $imagePath,
-                'institute_token' => $request->token
+                'institute_id' => $institute->id
             ]);
 
             DB::commit();
@@ -84,7 +88,7 @@ class FaceUserController extends Controller
         DB::beginTransaction();
         try {
             $user = EnrollUser::find($id);
-            if($user->institute_token != $request->query('token') || $user == null) {
+            if($user->institute->token != $request->input('token') || $user == null) {
                 return response()->json([
                     'error' => true,
                     'message' => 'User not found',
@@ -110,7 +114,8 @@ class FaceUserController extends Controller
 
     public function attendanceLog(Request $request) {
         try {
-            $logs = AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->where('institute_token', $request->query('token'))->get();
+            $institute = Institute::where('token', $request->input('token'))->first();
+            $logs = AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->where('institute_id', $institute->id)->orderBy('id', 'desc')->get();
             return response()->json(['error' => false, 'message' => 'Attendance logs', 'data' => $logs], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -137,9 +142,12 @@ class FaceUserController extends Controller
             $date = Carbon::parse($date)->startOfDay();
             $endOfDay = $date->copy()->endOfDay();
 
+            $institute = Institute::where('token', $request->input('token'))->first();
+
             $attendance = Attendance::select('id', 'user_id', 'name', 'in_time', 'exit_time')
-                ->where('institute_token', $request->query('token'))
+                ->where('institute_id', $institute->id)
                 ->whereBetween('created_at', [$date, $endOfDay])
+                ->orderBy('id', 'desc')
                 ->get();
 
             return response()->json([

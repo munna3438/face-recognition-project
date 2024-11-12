@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { router } from "@inertiajs/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
 import { MdOutlineContactPage } from "react-icons/md";
@@ -20,6 +20,8 @@ import {
     AddUserFormData,
     AddUserFormDataError,
     AddUserResponse,
+    Institute,
+    InstituteListResponse,
 } from "@/types";
 import Swal from "sweetalert2";
 import { Button } from "@/components/ui/button";
@@ -45,6 +47,8 @@ export default function Dashboard() {
         institute: ""
     });
 
+    const [institutes, setInstitutes] = useState<Institute[]>([]);
+
     const [uploadedfile, setUploadImage] = useState<string>();
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         handleChange(e);
@@ -55,12 +59,21 @@ export default function Dashboard() {
         }
     }
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement> | string) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement> | string, input?: string) {
         if (typeof e === "string") {
-            setFormData((values) => ({
-                ...values,
-                gender: e,
-            }));
+            if(input === 'institute') {
+                setFormData((values) => ({
+                    ...values,
+                    // gender: e,
+                    institute: e
+                }));
+            } else if(input === 'gender') {
+                setFormData((values) => ({
+                    ...values,
+                    gender: e,
+                    // institute: e
+                }));
+            }
             return;
         }
         const file = e.target.files?.[0];
@@ -138,7 +151,7 @@ export default function Dashboard() {
         dataForm.append("user_name", formData.user_name);
         dataForm.append("user_id", formData.user_id);
         dataForm.append("gender", formData.gender);
-        dataForm.append("institute", formData.institute);
+        dataForm.append("token", formData.institute);
         dataForm.append("image", formData.image);
 
         fetch("/api/add_user", {
@@ -151,7 +164,7 @@ export default function Dashboard() {
                     router.visit("/users");
                     Swal.fire({
                         icon: "success",
-                        title: "User has been saved",
+                        title: response.message,
                     });
                     formRef.current?.reset();
                 } else {
@@ -227,6 +240,18 @@ export default function Dashboard() {
         }
     };
 
+    useEffect(() => {
+        setFormLoading(true);
+        fetch("/api/institute/list")
+            .then((res) => res.json())
+            .then((data: InstituteListResponse) => {
+                setInstitutes(data.data);
+            })
+            .finally(() => {
+                setFormLoading(false);
+            });
+    }, [])
+
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
@@ -255,13 +280,29 @@ export default function Dashboard() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="institute">Institute Name</label>
-                            <Input
+                            <label htmlFor="institute">Institute</label>
+                            {/* <Input
                                 type="text"
                                 name="institute"
                                 id="institute"
                                 onChange={handleChange}
-                            />
+                            /> */}
+                            <Select onValueChange={(e) => handleChange(e, 'institute')}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select an institute" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {institutes.map((institute) => {
+                                        return (
+                                            <SelectItem key={institute.id} value={institute.token}>
+                                                {institute.name}
+                                            </SelectItem>
+                                        );
+                                    })}
+                                    {/* <SelectItem value="0">Male</SelectItem>
+                                    <SelectItem value="1">Female</SelectItem> */}
+                                </SelectContent>
+                            </Select>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.institute}
                             </div>
@@ -317,7 +358,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="gender">Gender</label>
-                            <Select onValueChange={handleChange}>
+                            <Select onValueChange={(e) => handleChange(e, 'gender')}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select a gender" />
                                 </SelectTrigger>

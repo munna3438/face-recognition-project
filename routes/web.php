@@ -36,13 +36,13 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('/users')->name('users.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('/users')->name('users.')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Users/Index');
     })->name('index');
@@ -52,7 +52,17 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/attendance-list', function() {
         return Inertia::render('Users/AttendanceList');
     })->name('list-attendances');
-})->middleware(['auth', 'verified']);
+});
+
+
+Route::middleware(['auth', 'verified'])->prefix('/institute')->name('institute.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Institute/Index');
+    })->name('index');
+    Route::get('/add', function () {
+        return Inertia::render('Institute/Add');
+    })->name('add');
+});
 
 
 require __DIR__ . '/auth.php';

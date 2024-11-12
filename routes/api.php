@@ -2,16 +2,10 @@
 
 use App\Http\Controllers\Api\CameraOperationController;
 use App\Http\Controllers\Api\FaceUserController;
-use App\Models\Attendance;
-use App\Models\AttendanceLogs;
-use App\Models\EnrollUser;
-use Carbon\Carbon;
+use App\Http\Controllers\Api\InstituteController;
+// use App\Http\Controllers\Api\InstituteController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,7 +15,11 @@ Route::get('/user', function (Request $request) {
 //
 
 // Institute Based
-Route::post('/institute/create', [FaceUserController::class, 'createInstitute']);
+Route::prefix('/institute')->group(function () {
+    Route::get('/list', [InstituteController::class, 'listInstitute']);
+    Route::post('/create', [InstituteController::class, 'createInstitute']);
+    Route::delete('/delete/{id}', [InstituteController::class, 'deleteInstitute']);
+});
 // ^^^^^^^^^^^^^^^
 
 

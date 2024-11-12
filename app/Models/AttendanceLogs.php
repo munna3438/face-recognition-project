@@ -15,6 +15,11 @@ class AttendanceLogs extends Model
         'mask',
         'access_card',
         'snap_timestamp',
-        'institute_token'
+        'institute_id'
     ];
+
+    public function institute()
+    {
+        return $this->belongsTo(Institute::class);
+    }
 }

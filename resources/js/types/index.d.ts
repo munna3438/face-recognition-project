@@ -42,8 +42,50 @@ export interface FaceUser {
     institute: string;
 }
 
+export interface Institute {
+    id: number;
+    name: string;
+    email: string;
+    cam_ip: string;
+    cam_port: string;
+    token: string;
+    max_user: string;
+    status?: string;
+}
+
+export interface InstituteListResponse {
+    data: Institute[];
+    error: boolean;
+    message: string;
+}
+
+export interface FaceUserListResponse {
+    data: FaceUser[];
+    error: boolean;
+    message: string;
+}
+
+export interface AddInstituteFormDataError {
+    name: string;
+    email: string;
+    cam_ip: string;
+    cam_port: string;
+    max_user: string;
+}
+export interface AddInstituteFormData {
+    name: string;
+    email: string;
+    cam_ip: string;
+    cam_port: string;
+    max_user: string;
+}
 
 export type AddUserResponse = {
+    error: boolean;
+    message: string;
+    errors?: Array<string>;
+};
+export type AddInstituteResponse = {
     error: boolean;
     message: string;
     errors?: Array<string>;
@@ -64,3 +106,10 @@ export type AddUserFormDataError = {
     image: string;
     institute: string;
 };
+
+
+export interface UserAttendanceLogResponse {
+    data: Attendances[];
+    error: boolean;
+    message: string;
+}

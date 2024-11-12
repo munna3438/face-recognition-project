@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('enroll_users', function (Blueprint $table) {
             $table->dropColumn('institute');
-            $table->string('institute_token')->after('log')->nullable();
+            $table->string('institute_id')->after('log')->nullable();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('enroll_users', function (Blueprint $table) {
             $table->string('institute')->after('log')->nullable();
-            $table->dropColumn('institute_token');
+            $table->dropColumn('institute_id');
         });
     }
 };

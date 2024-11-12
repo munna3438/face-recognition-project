@@ -40,6 +40,22 @@ export default function Header() {
                         Add User
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink
+                        href={route("institute.index")}
+                        active={route().current("institute.index")}
+                    >
+                        Institute
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        href={route("institute.add")}
+                        active={route().current("institute.add")}
+                    >
+                        Add Institute
+                    </NavLink>
+                </li>
                 {/* <li>
                     <NavLink
                         href="/rest"

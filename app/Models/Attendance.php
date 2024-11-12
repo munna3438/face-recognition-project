@@ -11,7 +11,7 @@ class Attendance extends Model
         'name',
         'in_time',
         'exit_time',
-        'institute_token'
+        'institute_id'
     ];
 
     protected $casts = [
@@ -22,5 +22,10 @@ class Attendance extends Model
     public function user()
     {
         return $this->belongsTo(EnrollUser::class, 'user_id', 'UserID');
+    }
+
+    public function institute()
+    {
+        return $this->belongsTo(Institute::class);
     }
 }
