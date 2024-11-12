@@ -18,6 +18,10 @@ class AttendanceLogs extends Model
         'institute_id'
     ];
 
+    protected $casts = [
+        'snap_timestamp' => 'datetime',
+    ];
+
     public function institute()
     {
         return $this->belongsTo(Institute::class);

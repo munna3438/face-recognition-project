@@ -28,7 +28,7 @@ export interface Capture {
     name: string;
     image: string;
     sex: number | null;
-    snap_timestamp: string;
+    snap_timestamp: Date;
 }
 
 export interface FaceUser {
@@ -61,6 +61,12 @@ export interface InstituteListResponse {
 
 export interface FaceUserListResponse {
     data: FaceUser[];
+    error: boolean;
+    message: string;
+}
+
+export interface CaptureListResponse {
+    data: Capture[];
     error: boolean;
     message: string;
 }
