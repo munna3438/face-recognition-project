@@ -320,11 +320,16 @@ export default function Dashboard() {
                                                 className="h-[25px] w-auto"
                                             />
                                         </button>
-                                        <video
-                                            className="h-[100px] aspect-video"
-                                            ref={videoRef}
-                                            autoPlay
-                                        ></video>
+                                        <div className="relative h-[100px] w-auto video_scan_container">
+                                            <video
+                                                className="h-full w-full relative"
+                                                ref={videoRef}
+                                                autoPlay
+                                            ></video>
+                                            <div className="absolute z-10 w-full h-1 video_canner-1 bg-red-300 ">
+                                                <span className="w-full h-1 block bg-transparent border-2 border-blue-500  rounded"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
 
