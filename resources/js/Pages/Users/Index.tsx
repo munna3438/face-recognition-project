@@ -60,7 +60,7 @@ export default function Index() {
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">Users List</h2>
                 <div>
-                    <Select defaultValue={selectedInstitute} onValueChange={(e) => handleChange(e)}>
+                    <Select value={selectedInstitute} onValueChange={(e) => handleChange(e)}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select an institute" />
                         </SelectTrigger>
@@ -83,7 +83,7 @@ export default function Index() {
                     </div>
                 )}
             </div>
-            <UsersTable users={users} />
+            <UsersTable users={users} token={selectedInstitute} />
         </AuthLayout>
     );
 }

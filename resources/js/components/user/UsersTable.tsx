@@ -32,9 +32,9 @@ import {
 } from "../ui/table";
 import Swal from "sweetalert2";
 
-export default function UsersTable({ users }: { users: FaceUser[] }) {
+export default function UsersTable({ users, token }: { users: FaceUser[], token: string|undefined }) {
     function userDelete(user_id: number) {
-        fetch(`/api/users/delete/${user_id}`, {
+        fetch(`/api/users/delete/${user_id}?token=${token}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
