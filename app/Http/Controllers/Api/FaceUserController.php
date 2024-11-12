@@ -64,6 +64,14 @@ class FaceUserController extends Controller
 
             $institute = Institute::where('token', $request->input('token'))->first();
 
+            if(EnrollUser::where('UserID', $request->user_id)->where('institute_id', $institute->id)->first() != null)  {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'User ID already exists',
+                    'errors' => []
+                ], 400);
+            }
+
             EnrollUser::create([
                 'userName' => $request->user_name,
                 'UserID' => $request->user_id,

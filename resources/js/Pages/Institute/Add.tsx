@@ -105,21 +105,21 @@ export default function Add() {
                     router.visit("/institute");
                     Swal.fire({
                         icon: "success",
-                        title: "Institute has been saved",
+                        title: response.message,
                     });
                     formRef.current?.reset();
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Error saving institute",
+                        title: response.message,
                     });
                     console.log("error");
                 }
             })
-            .catch((error) => {
+            .catch((error: AddInstituteResponse) => {
                 Swal.fire({
                     icon: "error",
-                    title: "Error saving institute",
+                    title: error.message,
                 });
                 console.log("error");
             })
@@ -132,14 +132,14 @@ export default function Add() {
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add Institute</h1>
-            <div className="bg-gray-100 dark:bg-opacity-10 p-7 rounded-md">
+            <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:p-7 rounded-md">
                 <form
                     ref={formRef}
                     onSubmit={handleFormSubmit}
                     className="flex flex-col gap-3"
                     encType="multipart/form-data"
                 >
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-6 ">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-8 gap-y-3 md:gap-y-6 ">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="name">Institute Name</label>
                             <Input

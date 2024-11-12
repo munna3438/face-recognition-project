@@ -161,15 +161,15 @@ export default function Dashboard() {
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Error saving user data",
+                        title: response.message,
                     });
                     console.log("error");
                 }
             })
-            .catch((error) => {
+            .catch((error: AddUserResponse) => {
                 Swal.fire({
                     icon: "error",
-                    title: "Error saving user data",
+                    title: error.message,
                 });
                 console.log("error");
             })
