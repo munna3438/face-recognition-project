@@ -1,22 +1,32 @@
-import { Button } from "@/components/ui/button";
-import { CapturesTable } from "@/components/user/CapturesTable";
+import { BakCapturesTable } from "@/components/user/BakCapturesTable";
+import CapturesTable from "@/components/user/CapturesTable";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { Capture } from "@/types";
+import { isEqual } from "lodash";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 
 export default function Dashboard() {
     const [attendances, setAttendances] = useState<Capture[]>([]);
     const [pending, setPending] = useState<boolean>(true);
 
+    const prevAttendancesRef = useRef<Capture[]>([]);
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             fetch("/api/attendances")
                 .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
-                    setAttendances(data.reverse());
+                .then((data: Capture[]) => {
+                    const isDataDifferent = !isEqual(
+                        data,
+                        prevAttendancesRef.current
+                    );
+
+                    if (isDataDifferent) {
+                        setAttendances(data.reverse());
+                        prevAttendancesRef.current = data;
+                    }
                 })
                 .finally(() => {
                     setPending(false);
@@ -40,7 +50,8 @@ export default function Dashboard() {
                     </div>
                 )}
             </div>
-            <CapturesTable captures={attendances} />
+            {/* <CapturesTable captures={attendances} /> */}
+            <BakCapturesTable captures={attendances} />
         </AuthLayout>
     );
 }

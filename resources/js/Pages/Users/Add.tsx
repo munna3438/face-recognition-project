@@ -194,7 +194,7 @@ export default function Dashboard() {
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
-            <div className="bg-gray-100 p-3 md:p-7 rounded-md">
+            <div className="bg-gray-100 dark:bg-transparent border p-3 md:p-7 rounded-md">
                 <form
                     ref={formRef}
                     onSubmit={handleFormSubmit}
@@ -210,9 +210,9 @@ export default function Dashboard() {
                                     name="user_name"
                                     id="user_name"
                                     onChange={handleChange}
-                                    className="pl-10"
+                                    className="pl-10 "
                                 />
-                                <CiUser className="absolute bottom-[10px] left-2  bg-gray-100 h-5 w-5 rounded-sm" />
+                                <CiUser className="absolute bottom-[10px] left-2  bg-gray-100 dark:text-[#333] h-5 w-5 rounded-sm" />
                             </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.user_name}
@@ -228,7 +228,7 @@ export default function Dashboard() {
                                     onChange={handleChange}
                                     className="pl-10"
                                 />
-                                <MdOutlineContactPage className="absolute bottom-[10px] left-2  bg-gray-100 h-5 w-5 rounded-sm" />
+                                <MdOutlineContactPage className="absolute bottom-[10px] left-2  bg-gray-100 dark:text-[#333] h-5 w-5 rounded-sm" />
                             </div>
 
                             <div className="text-sm text-red-500">
@@ -240,8 +240,9 @@ export default function Dashboard() {
                             <div className="w-full bg-white rounded-sm h-10 flex justify-between items-center gap-2 md:gap-4 p-2">
                                 {/* Button to open the camera */}
                                 <button
+                                    type="button"
                                     onClick={startCamera}
-                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-2 md:px-3 rounded-sm w-1/2"
+                                    className="bg-gray-100 hover:bg-gray-200 dark:text-[#333] py-[3px] px-2 md:px-3 rounded-sm w-1/2"
                                     disabled={isCameraOpen}
                                 >
                                     Take Image
@@ -253,7 +254,7 @@ export default function Dashboard() {
                                     onClick={(e) =>
                                         document.getElementById("image").click()
                                     }
-                                    className="bg-gray-100 hover:bg-gray-200 py-[3px] px-2 md:px-3 rounded-sm w-1/2"
+                                    className="bg-gray-100 hover:bg-gray-200 dark:text-[#333] py-[3px] px-2 md:px-3 rounded-sm w-1/2"
                                 >
                                     Browse
                                 </button>

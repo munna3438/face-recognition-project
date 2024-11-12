@@ -20,12 +20,11 @@ Route::get('/user', function (Request $request) {
 
 //
 
-Route::post('/add_user', [FaceUserController::class, 'addUser'])->name('store');
+Route::post('/add_user', [FaceUserController::class, 'addUser']);
+Route::delete('/users/delete/{id}', [FaceUserController::class, 'userDelete']);
 Route::get('/users-list', [FaceUserController::class, 'userList']);
 Route::get('/user-attendance', [FaceUserController::class, 'userAttendance']);
 Route::get('/attendances', [FaceUserController::class, 'attendanceLog']);
-
-
 
 Route::post('/faceRecognition', [CameraOperationController::class, 'faceRecognition']);
 Route::post('/taskRequest', [CameraOperationController::class, 'taskRequest']);

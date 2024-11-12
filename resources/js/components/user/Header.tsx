@@ -1,5 +1,6 @@
 import NavLink from "@/Components/NavLink";
 import { useEffect, useRef, useState } from "react";
+import { ThemeToggle } from "../theme-toggle";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,11 +23,14 @@ export default function Header() {
     }, [menuRef]);
 
     return (
-        <div className="hx-container p-2 md:p-4 flex justify-between md:justify-start items-center gap-8 border-b">
-            <h3 className="text-lg font-bold py-1 px-3 rounded hover:bg-gray-900 cursor-default select-none">
+        <div className="hx-container p-2 md:p-4 flex justify-between items-center gap-8 border-b">
+            <h3 className="text-lg font-bold py-1 px-3 rounded hover:bg-gray-900 cursor-default hover:text-white transition-all duration-300 select-none">
                 GOFACE
             </h3>
-            <ul className="hidden md:flex gap-3">
+            <div className="block md:hidden">
+                <ThemeToggle />
+            </div>
+            <ul className="hidden md:flex gap-3 md:items-center">
                 <li>
                     <NavLink
                         href={route("dashboard")}
@@ -67,6 +71,9 @@ export default function Header() {
                         Face Detections
                     </NavLink>
                 </li> */}
+                <li>
+                    <ThemeToggle />
+                </li>
             </ul>
             {/* mobile menu */}
             <div className="relative block md:hidden" ref={menuRef}>
@@ -75,15 +82,15 @@ export default function Header() {
                     onClick={toggleMenu}
                 >
                     <span
-                        className={`block w-6 h-0.5 bg-black transition-transform duration-500 rotate ${
+                        className={`block w-6 h-0.5 bg-black dark:bg-white transition-transform duration-500 rotate ${
                             isOpen ? "w-3" : ""
                         }`}
                     ></span>
                     <span
-                        className={`block w-6 h-0.5 bg-black transition-transform duration-500 `}
+                        className={`block w-6 h-0.5 bg-black dark:bg-white transition-transform duration-500 `}
                     ></span>
                     <span
-                        className={`block w-6 h-0.5 bg-black transition-transform duration-500 ${
+                        className={`block w-6 h-0.5 bg-black dark:bg-white transition-transform duration-500 ${
                             isOpen ? "w-3" : ""
                         }`}
                     ></span>
@@ -96,36 +103,42 @@ export default function Header() {
                 >
                     <ul className="flex flex-col p-2 space-y-2">
                         <li>
-                            <a
-                                href="#home"
-                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded"
+                            <NavLink
+                                href={route("dashboard")}
+                                active={route().current("dashboard")}
+                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded hover:no-underline"
                             >
                                 Home
-                            </a>
+                            </NavLink>
                         </li>
                         <li>
-                            <a
-                                href="#about"
-                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded"
+                            <NavLink
+                                href={route("users.list-attendances")}
+                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded hover:no-underline"
+                                active={route().current(
+                                    "users.list-attendances"
+                                )}
                             >
-                                About
-                            </a>
+                                Attendances
+                            </NavLink>
                         </li>
                         <li>
-                            <a
-                                href="#services"
-                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded"
+                            <NavLink
+                                href={route("users.index")}
+                                active={route().current("users.index")}
+                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded hover:no-underline"
                             >
-                                Services
-                            </a>
+                                Users
+                            </NavLink>
                         </li>
                         <li>
-                            <a
-                                href="#contact"
-                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded"
+                            <NavLink
+                                href={route("users.add")}
+                                active={route().current("users.add")}
+                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded hover:no-underline"
                             >
-                                Contact
-                            </a>
+                                Add User
+                            </NavLink>
                         </li>
                     </ul>
                 </nav>

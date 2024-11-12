@@ -15,7 +15,7 @@ class FaceUserController extends Controller
 {
     public function userList(Request $request)
     {
-        return EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status')->get();
+        return EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute')->get();
     }
 
     public function addUser(Request $request)
@@ -30,6 +30,7 @@ class FaceUserController extends Controller
                 'UserID' => $request->user_id,
                 'userGender' => $request->gender,
                 'userImage' => $imagePath,
+                'institute' => $request->institute
             ]);
 
             DB::commit();
@@ -39,6 +40,25 @@ class FaceUserController extends Controller
             return response()->json([
                 'error' => true,
                 'message' => 'Error saving user data',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function userDelete($id) {
+        DB::beginTransaction();
+        try {
+            $user = EnrollUser::find($id);
+            $uimg = public_path($user->userImage);
+            deleteImage($uimg);
+            $user->delete();
+            DB::commit();
+            return response()->json(['error' => false, 'message' => 'User deleted successfully'], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => true,
+                'message' => 'Error deleting user data',
                 'errors' => $e->getMessage()
             ], 500);
         }

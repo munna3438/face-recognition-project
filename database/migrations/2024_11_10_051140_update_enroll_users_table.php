@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('enroll_users', function (Blueprint $table) {
             $table->string('log')->after('status')->nullable();
+            $table->string('institute')->after('log')->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('enroll_users', function (Blueprint $table) {
             $table->dropColumn('log');
+            $table->dropColumn('institute');
         });
     }
 };
