@@ -101,7 +101,7 @@ export type AddUserFormData = {
     user_name: string;
     user_id: string;
     gender: string;
-    image: File;
+    image: File|null;
     institute: string;
 };
 
