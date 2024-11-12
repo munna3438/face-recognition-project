@@ -25,7 +25,7 @@ export default function Header() {
     return (
         <div className="hx-container p-2 md:p-4 flex justify-between items-center gap-8 border-b">
             <h3 className="text-lg font-bold py-1 px-3 rounded hover:bg-gray-900 cursor-default hover:text-white transition-all duration-300 select-none">
-                GOFACE
+                Touch Face
             </h3>
             <div className="block md:hidden">
                 <ThemeToggle />
