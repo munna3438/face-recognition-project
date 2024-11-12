@@ -334,6 +334,21 @@ export default function Dashboard() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1">
+                            <label htmlFor="gender">Gender</label>
+                            <Select onValueChange={(e) => handleChange(e, 'gender')}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select a gender" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="0">Male</SelectItem>
+                                    <SelectItem value="1">Female</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <div className="text-sm text-red-500">
+                                {formDataErrors.gender}
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-1">
                             <label htmlFor="image">Image</label>
                             <div className="w-full bg-white dark:bg-transparent rounded-sm h-10 flex justify-between items-center gap-2 md:gap-4 p-2">
                                 {/* Button to open the camera */}
@@ -359,21 +374,6 @@ export default function Dashboard() {
                             </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.image}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="gender">Gender</label>
-                            <Select onValueChange={(e) => handleChange(e, 'gender')}>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select a gender" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="0">Male</SelectItem>
-                                    <SelectItem value="1">Female</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <div className="text-sm text-red-500">
-                                {formDataErrors.gender}
                             </div>
                         </div>
                     </div>
