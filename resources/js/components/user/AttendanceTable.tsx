@@ -1,4 +1,4 @@
-import { Attendances } from '@/types'
+import { Attendances } from "@/types";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -10,30 +10,49 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import { useState } from 'react'
-import { Button } from '../ui/button';
-import { ArrowUpDown, ChevronDown } from 'lucide-react';
-import ImageModal from './ImageModal';
-import { Input } from '../ui/input';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { format } from 'date-fns';
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
+import ImageModal from "./ImageModal";
+import { Input } from "../ui/input";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../ui/table";
+import { format } from "date-fns";
 
-export default function AttendanceTable({ attendances }: { attendances: Attendances[] }) {
+export default function AttendanceTable({
+    attendances,
+}: {
+    attendances: Attendances[];
+}) {
     const columns: ColumnDef<Attendances>[] = [
         {
             accessorKey: "user_id",
             header: ({ column }) => {
                 return (
                     <Button
+                        className=""
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
                     >
                         ID Number
                         <ArrowUpDown />
                     </Button>
-                )
+                );
             },
             cell: ({ row }) => (
                 <div className="">{row.getValue("user_id")}</div>
@@ -44,41 +63,45 @@ export default function AttendanceTable({ attendances }: { attendances: Attendan
             header: ({ column }) => {
                 return (
                     <Button
+                        className=""
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
                     >
                         Name
                         <ArrowUpDown />
                     </Button>
-                )
+                );
             },
-            cell: ({ row }) => (
-                <div className="">{row.getValue("name")}</div>
-            ),
+            cell: ({ row }) => <div className="">{row.getValue("name")}</div>,
         },
         {
             accessorKey: "in_time",
             header: "In Time",
             cell: ({ row }) => (
-                <div className="capitalize">{format(row.getValue("in_time"), 'yyyy-MM-dd h-m-s a')}</div>
+                <div className="capitalize text-nowrap">
+                    {format(row.getValue("in_time"), "yyyy-MM-dd h-m-s a")}
+                </div>
             ),
         },
         {
             accessorKey: "exit_time",
             header: "Exit Time",
             cell: ({ row }) => (
-                <div className="capitalize">{format(row.getValue("exit_time"), 'yyyy-MM-dd h-m-s a')}</div>
+                <div className="capitalize text-nowrap">
+                    {format(row.getValue("exit_time"), "yyyy-MM-dd h-m-s a")}
+                </div>
             ),
         },
     ];
 
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = useState({})
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+        {}
+    );
+    const [rowSelection, setRowSelection] = useState({});
 
     const table = useReactTable({
         data: attendances,
@@ -97,17 +120,22 @@ export default function AttendanceTable({ attendances }: { attendances: Attendan
             columnVisibility,
             rowSelection,
         },
-    })
+    });
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter names..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
+                    value={
+                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        ""
                     }
-                    className="max-w-sm"
+                    onChange={(event) =>
+                        table
+                            .getColumn("name")
+                            ?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm border dark:bg-transparent dark:text-white dark:focus:border-white"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -131,7 +159,7 @@ export default function AttendanceTable({ attendances }: { attendances: Attendan
                                     >
                                         {column.id}
                                     </DropdownMenuCheckboxItem>
-                                )
+                                );
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -147,11 +175,12 @@ export default function AttendanceTable({ attendances }: { attendances: Attendan
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -161,7 +190,9 @@ export default function AttendanceTable({ attendances }: { attendances: Attendan
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -211,9 +242,5 @@ export default function AttendanceTable({ attendances }: { attendances: Attendan
                 </div>
             </div>
         </div>
-    )
+    );
 }
-
-
-
-

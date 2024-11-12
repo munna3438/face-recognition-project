@@ -24,7 +24,6 @@ import {
     InstituteListResponse,
 } from "@/types";
 import Swal from "sweetalert2";
-import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
     const formRef = useRef<HTMLFormElement>(null);
@@ -49,15 +48,15 @@ export default function Dashboard() {
 
     const [institutes, setInstitutes] = useState<Institute[]>([]);
 
-    const [uploadedfile, setUploadImage] = useState<string>();
-    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-        handleChange(e);
-        if (e.target.files && e.target.files.length > 0) {
-            setUploadImage(URL.createObjectURL(e.target.files[0]));
-        } else {
-            setUploadImage(undefined);
-        }
-    }
+    // const [uploadedfile, setUploadImage] = useState<string>();
+    // function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    //     handleChange(e);
+    //     if (e.target.files && e.target.files.length > 0) {
+    //         setUploadImage(URL.createObjectURL(e.target.files[0]));
+    //     } else {
+    //         setUploadImage(undefined);
+    //     }
+    // }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement> | string, input?: string) {
         if (typeof e === "string") {
@@ -110,12 +109,6 @@ export default function Dashboard() {
         } else {
             errors.user_name = "";
         }
-        if (formData.institute === "") {
-            errors.institute = "Please enter an institute name";
-            isValid = false;
-        } else {
-            errors.institute = "";
-        }
         if (formData.user_id === "") {
             errors.user_id = "Please enter a user id";
             isValid = false;
@@ -141,8 +134,6 @@ export default function Dashboard() {
     function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!validateForm()) {
-            console.log(formDataErrors)
-            console.log('not valid');
             return;
         }
         setFormLoading(true);
@@ -189,6 +180,11 @@ export default function Dashboard() {
 
     //camera
 
+    // const videoRef = useRef(null);
+    // const canvasRef = useRef(null);
+    // const [capturedImage, setCapturedImage] = useState(null);
+    // const [isCameraOpen, setIsCameraOpen] = useState(false);
+
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [capturedImage, setCapturedImage] = useState<string>("");
@@ -201,21 +197,26 @@ export default function Dashboard() {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
             });
-            if (videoRef.current) {
+            if(videoRef.current) {
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
             }
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Looks like webcam is not available or you didn't gave permission",
-            });
             console.error("Camera access denied:", error);
             setIsCameraOpen(false);
         }
     };
 
     // Function to capture the image from the video feed
+    // const capturePhoto = () => {
+    //     const canvas = canvasRef.current;
+    //     const context = canvas.getContext("2d");
+    //     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    //     const imageData = canvas.toDataURL("image/png");
+    //     setCapturedImage(imageData);
+    //     stopCamera();
+    // };
+
     const capturePhoto = () => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -230,6 +231,14 @@ export default function Dashboard() {
     };
 
     // Function to stop the camera after capturing
+    // const stopCamera = () => {
+    //     const stream = videoRef.current.srcObject;
+    //     const tracks = stream.getTracks();
+    //     tracks.forEach((track) => track.stop());
+    //     videoRef.current.srcObject = null;
+    //     setIsCameraOpen(false);
+    // };
+
     const stopCamera = () => {
         if (videoRef.current && videoRef.current.srcObject) {
             const stream = videoRef.current.srcObject as MediaStream;
@@ -255,14 +264,14 @@ export default function Dashboard() {
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
-            <div className="bg-gray-100 dark:bg-opacity-10 p-7 rounded-md">
+            <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:p-7 rounded-md">
                 <form
                     ref={formRef}
                     onSubmit={handleFormSubmit}
                     className="flex flex-col gap-3"
                     encType="multipart/form-data"
                 >
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-6 ">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 ">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="user_name">Name</label>
                             <div className="relative">
@@ -271,7 +280,7 @@ export default function Dashboard() {
                                     name="user_name"
                                     id="user_name"
                                     onChange={handleChange}
-                                    className="pl-10"
+                                    className="pl-10 "
                                 />
                                 <CiUser className="absolute bottom-[10px] left-2  bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
                             </div>
@@ -326,31 +335,27 @@ export default function Dashboard() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="image">Image</label>
-                            <div className="w-full bg-white dark:bg-opacity-10 rounded-sm flex justify-between items-center gap-4 px-2 py-1">
+                            <div className="w-full bg-white dark:bg-transparent rounded-sm h-10 flex justify-between items-center gap-2 md:gap-4 p-2">
                                 {/* Button to open the camera */}
-                                <Button
-                                    size="sm"
-                                    className="w-full"
-                                    onClick={startCamera}
-                                    // className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
-                                    disabled={isCameraOpen}
+                                <button
                                     type="button"
+                                    onClick={startCamera}
+                                    className="bg-gray-100 hover:bg-gray-200 dark:text-[#333] py-[3px] px-2 md:px-3 rounded-sm w-1/2"
+                                    disabled={isCameraOpen}
                                 >
                                     Take Image
-                                </Button>
+                                </button>
 
                                 {/* Button to browse for an image file */}
-                                <Button
-                                    size="sm"
-                                    className="w-full my-1"
+                                <button
                                     type="button"
                                     onClick={(e) =>
-                                        document.getElementById("image")!.click()
+                                        document.getElementById("image")?.click()
                                     }
-                                // className="bg-gray-100 hover:bg-gray-200 py-[3px] px-3 rounded-sm w-1/2"
+                                    className="bg-gray-100 hover:bg-gray-200 dark:text-[#333] py-[3px] px-2 md:px-3 rounded-sm w-1/2"
                                 >
                                     Browse
-                                </Button>
+                                </button>
                             </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.image}
@@ -372,7 +377,7 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center mt-6">
+                    <div className="flex flex-col gap-4 md:flex-row justify-between items-center mt-6">
                         <div>
                             <div className="h-[100px] aspect-square border rounded-sm border-gray-300 relative bg-white">
                                 {capturedImage ? (

@@ -1,4 +1,4 @@
-import { Capture } from '@/types'
+import { Capture } from "@/types";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -10,15 +10,27 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import { useState } from 'react'
-import { Button } from '../ui/button';
-import { ArrowUpDown, ChevronDown } from 'lucide-react';
-import ImageModal from './ImageModal';
-import { Input } from '../ui/input';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { format } from 'date-fns';
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
+import ImageModal from "./ImageModal";
+import { Input } from "../ui/input";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../ui/table";
+import { format } from "date-fns";
 
 export default function CapturesTable({ captures }: { captures: Capture[] }) {
     const columns: ColumnDef<Capture>[] = [
@@ -28,23 +40,29 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
                     >
                         ID Number
                         <ArrowUpDown />
                     </Button>
-                )
+                );
             },
             cell: ({ row }) => (
-                <div className="">{row.getValue("user_id") ? <b>{row.getValue("user_id")}</b> : (<i className="text-slate-300">N/A</i>)}</div>
+                <div className="">
+                    {row.getValue("user_id") ? (
+                        <b>{row.getValue("user_id")}</b>
+                    ) : (
+                        <i className="text-slate-300">N/A</i>
+                    )}
+                </div>
             ),
         },
         {
             accessorKey: "image",
             header: "Image",
-            cell: ({ row }) => (
-                <ImageModal image={row.getValue("image")} />
-            ),
+            cell: ({ row }) => <ImageModal image={row.getValue("image")} />,
         },
         {
             accessorKey: "name",
@@ -52,40 +70,54 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
                     >
                         Name
                         <ArrowUpDown />
                     </Button>
-                )
+                );
             },
             cell: ({ row }) => (
-                <div className="">{row.getValue("name") ? <b>{row.getValue("name")}</b> : (<i className="text-slate-300">Stranger</i>)}</div>
+                <div className="">
+                    {row.getValue("name") ? (
+                        <b>{row.getValue("name")}</b>
+                    ) : (
+                        <i className="text-slate-300">Stranger</i>
+                    )}
+                </div>
             ),
         },
         {
             accessorKey: "sex",
             header: "Gender",
             cell: ({ row }) => (
-                <div className="capitalize">{row.getValue("sex") === 0 ? 'male' : 'female'}</div>
+                <div className="capitalize">
+                    {row.getValue("sex") === 0 ? "male" : "female"}
+                </div>
             ),
         },
         {
             accessorKey: "snap_timestamp",
             header: "Time",
             cell: ({ row }) => (
-                <div className="">{format(row.getValue("snap_timestamp"), 'yyyy-MM-dd h:m:s a')}</div>
+                <div className="">
+                    {format(
+                        row.getValue("snap_timestamp"),
+                        "yyyy-MM-dd h:m:s a"
+                    )}
+                </div>
             ),
         },
     ];
 
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = useState({})
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+        {}
+    );
+    const [rowSelection, setRowSelection] = useState({});
 
     const table = useReactTable({
         data: captures,
@@ -104,17 +136,22 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
             columnVisibility,
             rowSelection,
         },
-    })
+    });
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter names..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
+                    value={
+                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        ""
                     }
-                    className="max-w-sm"
+                    onChange={(event) =>
+                        table
+                            .getColumn("name")
+                            ?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm border dark:bg-transparent dark:text-white dark:focus:border-white"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -138,7 +175,7 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
                                     >
                                         {column.id}
                                     </DropdownMenuCheckboxItem>
-                                )
+                                );
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -154,11 +191,12 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -168,7 +206,9 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -218,5 +258,5 @@ export default function CapturesTable({ captures }: { captures: Capture[] }) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

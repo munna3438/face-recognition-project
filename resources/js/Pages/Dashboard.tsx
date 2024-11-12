@@ -39,7 +39,10 @@ export default function Dashboard() {
             fetch(`/api/attendances?token=${selectedInstitute}`)
                 .then((res) => res.json())
                 .then((data: Capture[]) => {
-                    const isDataDifferent = !isEqual(data, prevAttendancesRef.current);
+                    const isDataDifferent = !isEqual(
+                        data,
+                        prevAttendancesRef.current
+                    );
 
                     if (isDataDifferent) {
                         setAttendances(data.reverse());

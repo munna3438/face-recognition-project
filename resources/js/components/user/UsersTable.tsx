@@ -1,4 +1,4 @@
-import { FaceUser } from '@/types'
+import { FaceUser } from "@/types";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -10,17 +10,27 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import { useState } from 'react'
-import { Button } from '../ui/button';
-import { ArrowUpDown, ChevronDown } from 'lucide-react';
-import ImageModal from './ImageModal';
-import { Input } from '../ui/input';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import Swal from 'sweetalert2';
-
-
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
+import ImageModal from "./ImageModal";
+import { Input } from "../ui/input";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../ui/table";
+import Swal from "sweetalert2";
 
 export default function UsersTable({ users }: { users: FaceUser[] }) {
     function userDelete(user_id: number) {
@@ -34,14 +44,14 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                 Swal.fire({
                     icon: "success",
                     title: "User deleted successfully",
-                })
+                });
             } else {
                 Swal.fire({
                     icon: "error",
                     title: "Error deleting user",
-                })
+                });
             }
-        })
+        });
     }
 
     const columns: ColumnDef<FaceUser>[] = [
@@ -51,23 +61,21 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
                     >
                         ID Number
                         <ArrowUpDown />
                     </Button>
-                )
+                );
             },
-            cell: ({ row }) => (
-                <div className="">{row.getValue("UserID")}</div>
-            ),
+            cell: ({ row }) => <div className="">{row.getValue("UserID")}</div>,
         },
         {
             accessorKey: "userImage",
             header: "Image",
-            cell: ({ row }) => (
-                <ImageModal image={row.getValue("userImage")} />
-            ),
+            cell: ({ row }) => <ImageModal image={row.getValue("userImage")} />,
         },
         {
             accessorKey: "userName",
@@ -75,12 +83,14 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
                     >
                         Name
                         <ArrowUpDown />
                     </Button>
-                )
+                );
             },
             cell: ({ row }) => (
                 <div className="">{row.getValue("userName")}</div>
@@ -90,32 +100,51 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
             accessorKey: "userGender",
             header: "Gender",
             cell: ({ row }) => (
-                <div className="capitalize">{row.getValue("userGender") == 0 ? 'male' : 'female'}</div>
+                <div className="capitalize">
+                    {row.getValue("userGender") == 0 ? "male" : "female"}
+                </div>
             ),
         },
         {
             accessorKey: "status",
             header: "Status",
             cell: ({ row, cell }) => (
-                <div className="">{row.getValue("status") == 0 ? 'Pending' : 'Saved'}{cell.row.original.log !== '' && cell.row.original.log !== null ? <span className="text-blue-400 text-sm"> ({cell.row.original.log})</span> : ''}</div>
+                <div className="">
+                    {row.getValue("status") == 0 ? "Pending" : "Saved"}
+                    {cell.row.original.log !== "" &&
+                    cell.row.original.log !== null ? (
+                        <span className="text-blue-400 text-sm">
+                            {" "}
+                            ({cell.row.original.log})
+                        </span>
+                    ) : (
+                        ""
+                    )}
+                </div>
             ),
         },
         {
             accessorKey: "action",
             header: "Action",
             cell: ({ row, cell }) => (
-                <div className=""><button onClick={() => userDelete(cell.row.original.id)} className='bg-red-500 text-white inline-block px-4 py-1 rounded hover:bg-red-600'>Delete</button></div>
+                <div className="">
+                    <button
+                        onClick={() => userDelete(cell.row.original.id)}
+                        className="bg-red-500 text-white inline-block px-4 py-1 rounded hover:bg-red-600"
+                    >
+                        Delete
+                    </button>
+                </div>
             ),
         },
     ];
 
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = useState({})
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+        {}
+    );
+    const [rowSelection, setRowSelection] = useState({});
 
     const table = useReactTable({
         data: users,
@@ -134,17 +163,23 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
             columnVisibility,
             rowSelection,
         },
-    })
+    });
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter names..."
-                    value={(table.getColumn("userName")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("userName")?.setFilterValue(event.target.value)
+                    value={
+                        (table
+                            .getColumn("userName")
+                            ?.getFilterValue() as string) ?? ""
                     }
-                    className="max-w-sm"
+                    onChange={(event) =>
+                        table
+                            .getColumn("userName")
+                            ?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm border dark:bg-transparent dark:text-white dark:focus:border-white"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -168,7 +203,7 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                                     >
                                         {column.id}
                                     </DropdownMenuCheckboxItem>
-                                )
+                                );
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -184,11 +219,12 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -198,7 +234,9 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -229,24 +267,24 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div> */}
                 {/* <div className="space-x-2 w-full"> */}
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Next
-                    </Button>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                >
+                    Previous
+                </Button>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                >
+                    Next
+                </Button>
                 {/* </div> */}
             </div>
         </div>
-    )
+    );
 }
