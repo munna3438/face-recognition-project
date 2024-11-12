@@ -7,10 +7,30 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect('/login');
 });
+
+// Route::get('/sd', function() {
+//     return response()->json(['token' => Str::random(64)]);
+// });
+
+// Route::get('/et', function() {
+//     $csrf_tok = csrf_token();
+//     return <<<EOT
+// <form method="post" action="/ef">
+// <input name="_token" value="{$csrf_tok}">
+// <input type="text" name="data">
+// <input type="submit" name="post">
+// </form>
+// EOT;
+// });
+
+// Route::match(['get', 'post'], '/ef', function(Request $req) {
+//     return response()->json(['val' => $req->input('data')]);
+// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

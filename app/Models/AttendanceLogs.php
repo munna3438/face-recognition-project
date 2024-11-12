@@ -15,5 +15,6 @@ class AttendanceLogs extends Model
         'mask',
         'access_card',
         'snap_timestamp',
+        'institute_token'
     ];
 }

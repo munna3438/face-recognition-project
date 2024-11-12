@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\AttendanceLogs;
 use App\Models\EnrollUser;
+use App\Models\Institute;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -14,11 +15,16 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class CameraOperationController extends Controller
 {
-    public function faceRecognition(Request $request)
+    public function faceRecognition(Request $request, $token)
     {
         $output = new ConsoleOutput();
         DB::beginTransaction();
         try {
+
+            if(!Institute::where('token', $token)->exists()) {
+                throw new Exception('Invalid token');
+                return;
+            }
 
             $imgPath = public_path('image/attendance/' . $request->frpic_name);
 
@@ -39,15 +45,18 @@ class CameraOperationController extends Controller
                 'mask' => $request->mask ?? null,
                 'access_card' => $request->access_card ?? null,
                 'snap_timestamp' => Carbon::createFromTimestamp($request->snap_time)->format('Y-m-d H:i:s'),
+                'institute_token' => $token,
             ]);
 
             if ($request->user_id) {
                 $today = Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d');
-                $foundAttendance = Attendance::where('user_id', $request->user_id)->where(
-                    'created_at',
-                    'like',
-                    $today . '%'
-                )->first();
+                $foundAttendance = Attendance::where('user_id', $request->user_id)
+                    ->where('institute_token', $token)
+                    ->where(
+                        'created_at',
+                        'like',
+                        $today . '%'
+                    )->first();
                 if ($foundAttendance) {
                     $foundAttendance->update([
                         'exit_time' => Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d H:i:s'),
@@ -57,6 +66,7 @@ class CameraOperationController extends Controller
                         'user_id' => $request->user_id,
                         'name' => $request->user_name,
                         'in_time' => Carbon::createFromTimestamp($request->timestamp)->format('Y-m-d H:i:s'),
+                        'institute_token' => $token,
                     ]);
                 }
             }
@@ -77,12 +87,17 @@ class CameraOperationController extends Controller
 
 
 
-    public function taskRequest(Request $request)
+    public function taskRequest(Request $request, $token)
     {
         $output = new ConsoleOutput();
         try {
-            $enrollUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('status', 0);
-            // Send user data if exists
+            if(!Institute::where('token', $token)->exists()) {
+                throw new Exception('Invalid token');
+                return;
+            }
+
+            $enrollUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_token', $token)->where('status', 0);
+
             if ($enrollUser->exists()) {
                 $enrollUser = $enrollUser->first();
                 $request_id = rand(11111111, 99999999);
@@ -119,16 +134,20 @@ class CameraOperationController extends Controller
     }
 
 
-    public function taskResult(Request $request)
+    public function taskResult(Request $request, $token)
     {
         $output = new ConsoleOutput();
         try {
+            if(!Institute::where('token', $token)->exists()) {
+                throw new Exception('Invalid token');
+                return;
+            }
             $resp_type = $request->resp_type;
             switch ($resp_type) {
                 case 'addUser':
                     $user_id = $request->resp_list[0]['user_id'];
                     $code = $request->resp_list[0]['code'];
-                    $enrollUser = EnrollUser::where('UserID', $user_id);
+                    $enrollUser = EnrollUser::where('UserID', $user_id)->where('institute_token', $token);
                     if ($code == 0) {
                         $enrollUser->update([
                             'status' => 1,

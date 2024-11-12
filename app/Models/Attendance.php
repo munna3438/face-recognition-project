@@ -11,6 +11,7 @@ class Attendance extends Model
         'name',
         'in_time',
         'exit_time',
+        'institute_token'
     ];
 
     protected $casts = [

@@ -3,11 +3,11 @@ import { ThemeToggle } from "../theme-toggle";
 
 export default function Header() {
     return (
-        <div className="hx-container p-4 flex justify-start items-center gap-8 border-b">
+        <div className="hx-container p-4 px-5 flex justify-start items-center gap-8 border-b">
             <h3 className="text-lg font-bold py-1 px-3 rounded hover:bg-gray-900 cursor-default select-none">
-                GOFACE
+                TouchFace
             </h3>
-            <ul className="flex gap-3">
+            <ul className="flex items-center gap-3">
                 <li>
                     <NavLink
                         href={route("dashboard")}

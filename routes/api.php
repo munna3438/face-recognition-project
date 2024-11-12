@@ -20,15 +20,50 @@ Route::get('/user', function (Request $request) {
 
 //
 
-Route::post('/add_user', [FaceUserController::class, 'addUser']);
-Route::delete('/users/delete/{id}', [FaceUserController::class, 'userDelete']);
-Route::get('/users-list', [FaceUserController::class, 'userList']);
-Route::get('/user-attendance', [FaceUserController::class, 'userAttendance']);
-Route::get('/attendances', [FaceUserController::class, 'attendanceLog']);
+// Institute Based
+Route::post('/institute/create', [FaceUserController::class, 'createInstitute']);
+// ^^^^^^^^^^^^^^^
 
-Route::post('/faceRecognition', [CameraOperationController::class, 'faceRecognition']);
-Route::post('/taskRequest', [CameraOperationController::class, 'taskRequest']);
-Route::post('/taskResult', [CameraOperationController::class, 'taskResult']);
+
+Route::middleware(['verify_institute'])->group(function() {
+    Route::post('/add_user', [FaceUserController::class, 'addUser']);
+    Route::delete('/users/delete/{id}', [FaceUserController::class, 'userDelete']);
+    Route::get('/users-list', [FaceUserController::class, 'userList']);
+    Route::get('/user-attendance', [FaceUserController::class, 'userAttendance']);
+    Route::get('/attendances', [FaceUserController::class, 'attendanceLog']);
+});
+
+
+Route::post('/{token}/faceRecognition', [CameraOperationController::class, 'faceRecognition']);
+Route::post('/{token}/taskRequest', [CameraOperationController::class, 'taskRequest']);
+Route::post('/{token}/taskResult', [CameraOperationController::class, 'taskResult']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Route::post("/{any}", function (Request $request, $any) {
 //     $responseData = [

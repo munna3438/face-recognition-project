@@ -10,16 +10,51 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class FaceUserController extends Controller
 {
     public function userList(Request $request)
     {
-        return EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute')->get();
+        try {
+            $users = EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_token')->where('institute_token', $request->query('token'))->get();
+            return response()->json(['error' => false, 'message' => 'User list', 'data' => $users], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Error fetching user list',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function addUser(Request $request)
     {
+        $validate = Validator::make([
+            'user_name' => 'required|max:255',
+            'user_id' => 'required|unique:enroll_users,UserID',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:50',
+            'gender' => 'required|in:0,1',
+        ], [
+            'user_name.required' => 'User name is required',
+            'user_id.required' => 'User ID is required',
+            'user_id.unique' => 'User ID already exists',
+            'image.required' => 'User image is required',
+            'image.image' => 'User image must be an image',
+            'image.mimes' => 'User image must be a jpeg, png or jpg file',
+            'image.max' => 'User image must be less than 50KB',
+            'gender.required' => 'User gender is required',
+            'gender.in' => 'User gender must be 0 or 1 (0 for male, 1 for female)',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Error validating user data',
+                'errors' => $validate->errors()
+            ], 422);
+        }
+
         DB::beginTransaction();
         try {
             $file = $request->file('image');
@@ -30,7 +65,7 @@ class FaceUserController extends Controller
                 'UserID' => $request->user_id,
                 'userGender' => $request->gender,
                 'userImage' => $imagePath,
-                'institute' => $request->institute
+                'institute_token' => $request->token
             ]);
 
             DB::commit();
@@ -39,16 +74,23 @@ class FaceUserController extends Controller
             DB::rollBack();
             return response()->json([
                 'error' => true,
-                'message' => 'Error saving user data',
+                'message' => 'Error creating user',
                 'errors' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function userDelete($id) {
+    public function userDelete($id, Request $request) {
         DB::beginTransaction();
         try {
             $user = EnrollUser::find($id);
+            if($user->institute_token != $request->query('token') || $user == null) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'User not found',
+                    'errors' => []
+                ], 404);
+            }
             $uimg = public_path($user->userImage);
             deleteImage($uimg);
             $user->delete();
@@ -67,7 +109,16 @@ class FaceUserController extends Controller
     // Attendance Methods
 
     public function attendanceLog(Request $request) {
-        return AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->get();
+        try {
+            $logs = AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->where('institute_token', $request->query('token'))->get();
+            return response()->json(['error' => false, 'message' => 'Attendance logs', 'data' => $logs], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Error fetching attendance logs',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function userAttendance(Request $request)
@@ -77,8 +128,9 @@ class FaceUserController extends Controller
 
             if (!$date) {
                 return response()->json([
-                    'status' => 'error',
+                    'error' => true,
                     'message' => 'Date parameter is required.',
+                    'errors' => [],
                 ], 400);
             }
 
@@ -86,18 +138,20 @@ class FaceUserController extends Controller
             $endOfDay = $date->copy()->endOfDay();
 
             $attendance = Attendance::select('id', 'user_id', 'name', 'in_time', 'exit_time')
+                ->where('institute_token', $request->query('token'))
                 ->whereBetween('created_at', [$date, $endOfDay])
                 ->get();
 
             return response()->json([
-                'status' => 'success',
+                'error' => false,
+                'message' => 'Attendance fetched successfully.',
                 'data' => $attendance,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'error' => true,
                 'message' => 'An error occurred while fetching attendance.',
-                'error' => $e->getMessage(),
+                'errors' => $e->getMessage(),
             ], 500);
         }
     }
