@@ -31,6 +31,9 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/add', function () {
         return Inertia::render('Users/Add');
     })->name('add');
+    Route::get('/image', function () {
+        return Inertia::render('Users/image');
+    })->name('image');
     Route::get('/attendance-list', function () {
         return Inertia::render('Users/AttendanceList');
     })->name('list-attendances');

@@ -179,11 +179,15 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                             .getColumn("userName")
                             ?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm border dark:bg-transparent dark:text-white dark:focus:border-white"
+                    className="max-w-sm dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
+                        <Button
+                            variant="outline"
+                            // className="ml-auto primary_button !border-[#3996F6] hover:!text-[#3996F6]"
+                            className="ml-auto "
+                        >
                             Columns <ChevronDown />
                         </Button>
                     </DropdownMenuTrigger>
@@ -209,13 +213,16 @@ export default function UsersTable({ users }: { users: FaceUser[] }) {
                 </DropdownMenu>
             </div>
             <div className="rounded-md border">
-                <Table>
+                <Table className="text-md">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead
+                                            key={header.id}
+                                            className="bg-muted"
+                                        >
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

@@ -33,10 +33,9 @@ export default function NavLink({
         <Link
             {...props}
             className={cn(
-                "hover:underline text-md ",
                 {
-                    "font-bold": active,
-                    "text-gray-400": !active,
+                    "text_secondary ": !active,
+                    "text_primary ": active,
                 },
                 className
             )}

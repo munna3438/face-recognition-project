@@ -1,3 +1,4 @@
+import NavLink from "@/Components/NavLink";
 import UsersTable from "@/components/user/UsersTable";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { FaceUser } from "@/types";
@@ -38,13 +39,22 @@ export default function Dashboard() {
 
     return (
         <AuthLayout>
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Users List</h2>
+            <div className="mb-6 flex justify-between items-center">
+                <h1 className="text-2xl md:text-3xl font-bold text_primary">
+                    Add User
+                </h1>
+                <NavLink
+                    href={route("users.image")}
+                    active={route().current("dashboard")}
+                    className="primary_button"
+                >
+                    Add User
+                </NavLink>
             </div>
             <div className="relative top-14 ">
                 {pending && (
                     <div className="w-full h-14 absolute flex justify-center items-center">
-                        <FaSpinner className="text-2xl animate-spin" />
+                        <FaSpinner className="text-2xl animate-spin z-20" />
                     </div>
                 )}
             </div>
