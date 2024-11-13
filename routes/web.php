@@ -7,6 +7,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -29,7 +31,7 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/add', function () {
         return Inertia::render('Users/Add');
     })->name('add');
-    Route::get('/attendance-list', function() {
+    Route::get('/attendance-list', function () {
         return Inertia::render('Users/AttendanceList');
     })->name('list-attendances');
 })->middleware(['auth', 'verified']);

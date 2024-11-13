@@ -6,20 +6,19 @@ export interface User {
 }
 
 export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>,
+    T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
     auth: {
         user: User;
     };
 };
 
-
 export interface Attendances {
     id: number;
     user_id: string;
     name: string;
     in_time: Date;
-    exit_time: Date|null;
+    exit_time: Date | null;
 }
 
 export interface Capture {
@@ -28,7 +27,7 @@ export interface Capture {
     name: string;
     image: string;
     sex: number | null;
-    snap_timestamp: string;
+    snap_timestamp: Date;
 }
 
 export interface FaceUser {
@@ -42,6 +41,49 @@ export interface FaceUser {
     institute: string;
 }
 
+export interface Institute {
+    id: number;
+    name: string;
+    email: string;
+    cam_ip: string;
+    cam_port: string;
+    token: string;
+    max_user: string;
+    status?: string;
+}
+
+export interface InstituteListResponse {
+    data: Institute[];
+    error: boolean;
+    message: string;
+}
+
+export interface FaceUserListResponse {
+    data: FaceUser[];
+    error: boolean;
+    message: string;
+}
+
+export interface CaptureListResponse {
+    data: Capture[];
+    error: boolean;
+    message: string;
+}
+
+export interface AddInstituteFormDataError {
+    name: string;
+    email: string;
+    cam_ip: string;
+    cam_port: string;
+    max_user: string;
+}
+export interface AddInstituteFormData {
+    name: string;
+    email: string;
+    cam_ip: string;
+    cam_port: string;
+    max_user: string;
+}
 
 export type AddUserResponse = {
     error: boolean;
@@ -53,7 +95,7 @@ export type AddUserFormData = {
     user_name: string;
     user_id: string;
     gender: string;
-    image: File;
+    image: File | null;
     institute: string;
 };
 

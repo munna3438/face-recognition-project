@@ -15,5 +15,15 @@ class AttendanceLogs extends Model
         'mask',
         'access_card',
         'snap_timestamp',
+        'institute_id'
     ];
+
+    protected $casts = [
+        'snap_timestamp' => 'datetime',
+    ];
+
+    public function institute()
+    {
+        return $this->belongsTo(Institute::class);
+    }
 }

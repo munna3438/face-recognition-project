@@ -1,9 +1,20 @@
 import { BakCapturesTable } from "@/components/user/BakCapturesTable";
 import CapturesTable from "@/components/user/CapturesTable";
 import AuthLayout from "@/Layouts/AuthLayout";
-import { Capture } from "@/types";
+import {
+    Capture,
+    CaptureListResponse,
+    Institute,
+    InstituteListResponse,
+} from "@/types";
 import { isEqual } from "lodash";
-
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import React, { useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 
@@ -17,15 +28,15 @@ export default function Dashboard() {
         const intervalId = setInterval(() => {
             fetch("/api/attendances")
                 .then((res) => res.json())
-                .then((data: Capture[]) => {
+                .then((data: CaptureListResponse) => {
                     const isDataDifferent = !isEqual(
-                        data,
+                        data.data,
                         prevAttendancesRef.current
                     );
 
                     if (isDataDifferent) {
-                        setAttendances(data.reverse());
-                        prevAttendancesRef.current = data;
+                        setAttendances(data.data);
+                        prevAttendancesRef.current = data.data;
                     }
                 })
                 .finally(() => {

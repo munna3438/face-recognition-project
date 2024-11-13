@@ -81,7 +81,7 @@ export default function AttendanceTable({
             header: "In Time",
             cell: ({ row }) => (
                 <div className="capitalize text-nowrap">
-                    {format(row.getValue("in_time"), "yyyy-MM-dd h-m-s a")}
+                    {format(row.getValue("in_time"), "yyyy-MM-dd h:m:s a")}
                 </div>
             ),
         },
@@ -90,7 +90,7 @@ export default function AttendanceTable({
             header: "Exit Time",
             cell: ({ row }) => (
                 <div className="capitalize text-nowrap">
-                    {format(row.getValue("exit_time"), "yyyy-MM-dd h-m-s a")}
+                    {row.getValue("exit_time") ? format(row.getValue("exit_time"), "yyyy-MM-dd h:m:s a") : ''}
                 </div>
             ),
         },
