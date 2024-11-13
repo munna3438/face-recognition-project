@@ -142,6 +142,9 @@
     .border_primary {
         @apply border-[#3996F6];
     }
+    .border_secondary {
+        @apply border-[#FFFFFF80];
+    }
     .bg_secondary {
         @apply bg-[#FFFFFF80];
     }

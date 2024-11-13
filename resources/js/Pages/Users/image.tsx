@@ -25,11 +25,14 @@ export default function image() {
                     <img src={faceImageUrl} className="h-52" />
                 )}
             </div> */}
-            <div className="bg-[#181A1C] p-10 w-full flex flex-col md:flex-row gap-4">
-                <div className="w-3/6">
-                    <div className="w-full h-auto bg-[#303538]"></div>
-                </div>
-                <div className="w-3/6 grid grid-cols-2 gap-2">
+            <div className="bg-[#181A1C] p-10 w-full">
+                <CamProvider setFaceImage={setFaceImage} />
+                {/* <div className="w-3/6">
+                    <div className="w-full h-auto bg-[#303538] p-4">
+                        <CamProvider setFaceImage={setFaceImage} />
+                    </div>
+                </div> */}
+                {/* <div className="w-3/6 grid grid-cols-2 gap-2">
                     <div className="w-full aspect-square border  border-white ">
                         img
                     </div>
@@ -42,7 +45,7 @@ export default function image() {
                     <div className="w-full aspect-square border border-dashed">
                         img
                     </div>
-                </div>
+                </div> */}
             </div>
         </AuthLayout>
     );

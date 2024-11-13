@@ -201,9 +201,7 @@ export default function Add() {
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
             <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:p-7 rounded-md">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <CamProvider setFaceImage={setFaceImage} />
-                    </div>
+                    <div></div>
                     <div className="">
                         {/* Form */}
                         <form
