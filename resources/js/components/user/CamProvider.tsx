@@ -5,6 +5,11 @@ import { IoTrashBin } from "react-icons/io5";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Swal from "sweetalert2";
+import { GoPlus } from "react-icons/go";
+import NavLink from "@/Components/NavLink";
+import { IoMdCheckmark } from "react-icons/io";
+import { MdClose } from "react-icons/md";
+import "./style.css";
 
 export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
     const camRef = useRef<null | any>(null);
@@ -28,7 +33,7 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
             }
 
             const newCaptures = [...old];
-            if(newCaptures[index] === selectedImage) {
+            if (newCaptures[index] === selectedImage) {
                 setSelectedImage(undefined);
             }
             newCaptures[index] = "";
@@ -46,13 +51,12 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
     ) => {
         const file = e.target.files?.[0];
 
-        if(!file)
-            return;
+        if (!file) return;
 
         if (!file || !file.type.startsWith("image/")) {
             Swal.fire({
                 icon: "error",
-                title: "Please select a valid image file"
+                title: "Please select a valid image file",
             });
             return;
         }
@@ -79,8 +83,8 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
     };
 
     useEffect(() => {
-        if(typeof selectedImage === "string" && selectedImage.length > 0) {
-            setFaceImage(base64ToFile(selectedImage))
+        if (typeof selectedImage === "string" && selectedImage.length > 0) {
+            setFaceImage(base64ToFile(selectedImage));
         } else {
             setFaceImage(null);
         }
@@ -110,165 +114,288 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
         });
     }, [tempCapture]);
     return (
-        <div className="flex flex-col justify-center items-start gap-2">
-            <Webcam
-                ref={camRef}
-                screenshotFormat="image/jpeg"
-                videoConstraints={{ facingMode: "selfie" }}
-            />
-            <div className="flex justify-center items-center w-full gap-2">
-                <div
-                    className={cn(
-                        "border  relative w-full h-20 group rounded",
-                        {
-                            "outline outline-green-500 border-green-500":
-                                captures[0] === selectedImage && selectedImage !== undefined,
-                        }
-                    )}
-                >
-                    {captures[0] !== "" && (
-                        <img
-                            className="w-full h-full rounded"
-                            src={captures[0]}
-                        />
-                    )}
-                    {captures[0] !== "" && (
-                        <div className="w-full h-full p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeCapture(0)}
-                            >
-                                <IoTrashBin size={14} />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setSelectedImage(captures[0])}
-                            >
-                                <TiTick size={14} />
-                            </Button>
+        <div>
+            <div className="flex flex-col md:flex-row gap-10 w-full mb-10">
+                <div className="w-1/2">
+                    {/* <div className="w-full h-[420px] bg-[#303538] p-4 video_scan_container">
+                        <div className="h-full w-full ">
+                            <Webcam
+                                ref={camRef}
+                                screenshotFormat="image/jpeg"
+                                videoConstraints={{ facingMode: "selfie" }}
+                                className="h-full w-full"
+                            />
                         </div>
-                    )}
+                        <div className="video_canner">
+                            <span className="scanner-span"></span>
+                        </div>
+                    </div> */}
+                    <div className="w-full h-[420px] bg-transparent p-4 video_scan_container">
+                        <span className="top-0 left-0 h-1 w-10 bg_primary absolute"></span>
+                        <span className="top-0 right-0 h-1 w-10 bg_primary absolute"></span>
+                        <span className="top-0 left-0 h-10 w-1 bg_primary absolute"></span>
+                        <span className="top-0 right-0 h-10 w-1 bg_primary absolute"></span>
+                        <span className="bottom-0 left-0 h-1 w-10 bg_primary absolute"></span>
+                        <span className="bottom-0 right-0 h-1 w-10 bg_primary absolute"></span>
+                        <span className="bottom-0 left-0 h-10 w-1 bg_primary absolute"></span>
+                        <span className="bottom-0 right-0 h-10 w-1 bg_primary absolute"></span>
+                        <div className="h-full w-full ">
+                            <Webcam
+                                ref={camRef}
+                                screenshotFormat="image/jpeg"
+                                videoConstraints={{ facingMode: "selfie" }}
+                                className="h-full w-full"
+                            />
+                        </div>
+                        <div className="video_canner">
+                            <span className="scanner-span"></span>
+                        </div>
+                    </div>
                 </div>
-                <div
-                    className={cn(
-                        "border  relative w-full h-20 group rounded",
-                        {
-                            "outline outline-green-500 border-green-500":
-                                captures[1] === selectedImage && selectedImage !== undefined,
-                        }
-                    )}
-                >
-                    {captures[1] !== "" && (
-                        <img
-                            className="w-full h-full rounded"
-                            src={captures[1]}
-                        />
-                    )}
-                    {captures[1] !== "" && (
-                        <div className="w-full h-full p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeCapture(1)}
-                            >
-                                <IoTrashBin size={14} />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setSelectedImage(captures[1])}
-                            >
-                                <TiTick size={14} />
-                            </Button>
-                        </div>
-                    )}
-                </div>
-                <div
-                    className={cn(
-                        "border  relative w-full h-20 group rounded",
-                        {
-                            "outline outline-green-500 border-green-500":
-                                captures[2] === selectedImage && selectedImage !== undefined,
-                        }
-                    )}
-                >
-                    {captures[2] !== "" && (
-                        <img
-                            className="w-full h-full rounded"
-                            src={captures[2]}
-                        />
-                    )}
-                    {captures[2] !== "" && (
-                        <div className="w-full h-full p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeCapture(2)}
-                            >
-                                <IoTrashBin size={14} />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setSelectedImage(captures[2])}
-                            >
-                                <TiTick size={14} />
-                            </Button>
-                        </div>
-                    )}
-                </div>
-                <div
-                    className={cn(
-                        "border  relative w-full h-20 group rounded",
-                        {
-                            "outline outline-green-500 border-green-500":
-                                captures[3] === selectedImage && selectedImage !== undefined,
-                        }
-                    )}
-                >
-                    {captures[3] !== "" && (
-                        <img
-                            className="w-full h-full rounded"
-                            src={captures[3]}
-                        />
-                    )}
-                    {captures[3] !== "" && (
-                        <div className="w-full h-full p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeCapture(3)}
-                            >
-                                <IoTrashBin size={14} />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setSelectedImage(captures[3])}
-                            >
-                                <TiTick size={14} />
-                            </Button>
-                        </div>
-                    )}
+                <div className="w-1/2 grid grid-cols-2 gap-5 ">
+                    <div
+                        className={cn(
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            {
+                                "outline outline-green-500 border-dashed  border-green-500":
+                                    captures[0] === selectedImage &&
+                                    selectedImage !== undefined,
+                            }
+                        )}
+                    >
+                        {captures[0] !== "" ? (
+                            <img
+                                className="w-full h-full rounded  object-cover"
+                                src={captures[0]}
+                            />
+                        ) : (
+                            <div className="h-full w-full flex justify-center items-center">
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
+                            </div>
+                        )}
+                        {captures[0] !== "" && (
+                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeCapture(0)}
+                                >
+                                    <MdClose size={18} />
+                                </Button>
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                        setSelectedImage(captures[0])
+                                    }
+                                >
+                                    <IoMdCheckmark size={18} />
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        className={cn(
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            {
+                                "outline border-green-500 outline-green-500":
+                                    captures[1] === selectedImage &&
+                                    selectedImage !== undefined,
+                            }
+                        )}
+                    >
+                        {captures[1] !== "" ? (
+                            <img
+                                className="w-full h-full rounded object-cover"
+                                src={captures[1]}
+                            />
+                        ) : (
+                            <div className="h-full w-full flex justify-center items-center">
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
+                            </div>
+                        )}
+                        {captures[1] !== "" && (
+                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeCapture(1)}
+                                >
+                                    <MdClose size={18} />
+                                </Button>
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                        setSelectedImage(captures[1])
+                                    }
+                                >
+                                    <IoMdCheckmark size={18} />
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        className={cn(
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            {
+                                "outline outline-green-500 border-green-500":
+                                    captures[2] === selectedImage &&
+                                    selectedImage !== undefined,
+                            }
+                        )}
+                    >
+                        {captures[2] !== "" ? (
+                            <img
+                                className="w-full h-full rounded object-cover"
+                                src={captures[2]}
+                            />
+                        ) : (
+                            <div className="h-full w-full flex justify-center items-center">
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
+                            </div>
+                        )}
+                        {captures[2] !== "" && (
+                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeCapture(2)}
+                                >
+                                    <MdClose size={18} />
+                                </Button>
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                        setSelectedImage(captures[2])
+                                    }
+                                >
+                                    <IoMdCheckmark size={18} />
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        className={cn(
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            {
+                                "outline outline-green-500 border-green-500":
+                                    captures[3] === selectedImage &&
+                                    selectedImage !== undefined,
+                            }
+                        )}
+                    >
+                        {captures[3] !== "" ? (
+                            <img
+                                className="w-full h-full rounded object-cover"
+                                src={captures[3]}
+                            />
+                        ) : (
+                            <div className="h-full w-full flex justify-center items-center">
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
+                            </div>
+                        )}
+                        {captures[3] !== "" && (
+                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeCapture(3)}
+                                >
+                                    <MdClose size={18} />
+                                </Button>
+                                <Button
+                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                        setSelectedImage(captures[3])
+                                    }
+                                >
+                                    <IoMdCheckmark size={18} />
+                                </Button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-            <div className="flex justify-center items-center gap-2 w-full">
-                <Button onClick={captureImage} className="w-full">
-                    Capture
-                </Button>
-                <span>or</span>
-                <Button className="w-full" onClick={uploadImageBtn}>
-                    Upload Image
-                </Button>
+            <div className="flex gap-10">
+                <div className="w-1/2 flex justify-center">
+                    <Button
+                        onClick={captureImage}
+                        className="primary_button text-md text-white bg-[#3996F6] h-[3rem] px-12"
+                    >
+                        Take Snap
+                    </Button>
+                </div>
+                <div className="w-1/2 flex items-center justify-end gap-5">
+                    <p>You can use your drive</p>
+                    <Button
+                        type="button"
+                        className="primary_button text-md text-[#3996F6] bg-transparent h-[3rem] w-[150px]"
+                        onClick={uploadImageBtn}
+                    >
+                        Upload Image
+                    </Button>
+                    {/* if image selected then next button enable other wish next button will be desable */}
+                    {/* <Button
+                        type="button"
+                        className="primary_button text-md text-white bg-[#3996F6] h-[3rem] px-12"
+
+                    >
+                        Next
+                    </Button> */}
+                    {selectedImage ? (
+                        <NavLink
+                            href={route("users.add")}
+                            active={route().current("users.add")}
+                            className="primary_button w-[150px] flex justify-center items-center"
+                            disabled={!selectedImage}
+                        >
+                            Next
+                        </NavLink>
+                    ) : (
+                        <Button
+                            type="button"
+                            className="bg-[#25292A] h-11 text-white border border-[#25292A] w-[150px] flex justify-center items-center"
+                            disabled
+                        >
+                            Next
+                        </Button>
+                    )}
+                </div>
             </div>
             <input
                 ref={fileRef}
                 type="file"
-                className="invisible"
+                className="invisible hidden"
                 onChange={selectFileHandler}
             />
+            {/* <div>
+                <div className="flex justify-center items-center gap-2 w-full">
+                    <Button onClick={captureImage} className="w-full">
+                        Capture
+                    </Button>
+                    <span>or</span>
+                    <Button className="w-full" onClick={uploadImageBtn}>
+                        Upload Image
+                    </Button>
+                </div>
+                <input
+                    ref={fileRef}
+                    type="file"
+                    className="invisible"
+                    onChange={selectFileHandler}
+                />
+            </div> */}
         </div>
     );
 }
@@ -288,7 +415,10 @@ export function fileToBase64(file: File) {
     });
 }
 
-export function base64ToFile(base64Url: string, fileName: string = "image.png"): File {
+export function base64ToFile(
+    base64Url: string,
+    fileName: string = "image.png"
+): File {
     const [mimeInfo, base64Data] = base64Url.split(",");
     const mimeTypeMatch = mimeInfo.match(/:(.*?);/);
 

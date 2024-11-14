@@ -32,7 +32,13 @@ import {
 } from "../ui/table";
 import Swal from "sweetalert2";
 
-export default function UsersTable({ users, token }: { users: FaceUser[], token: string|undefined }) {
+export default function UsersTable({
+    users,
+    token,
+}: {
+    users: FaceUser[];
+    token: string | undefined;
+}) {
     function userDelete(user_id: number) {
         fetch(`/api/users/delete/${user_id}?token=${token}`, {
             method: "DELETE",
@@ -179,7 +185,7 @@ export default function UsersTable({ users, token }: { users: FaceUser[], token:
                             .getColumn("userName")
                             ?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm border dark:bg-transparent dark:text-white dark:focus:border-white"
+                    className="max-w-sm dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -212,7 +218,7 @@ export default function UsersTable({ users, token }: { users: FaceUser[], token:
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow key={headerGroup.id} className="bg-muted">
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <TableHead key={header.id}>
