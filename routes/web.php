@@ -50,7 +50,10 @@ Route::middleware(['auth', 'verified'])->prefix('/users')->name('users.')->group
     Route::get('/add', function () {
         return Inertia::render('Users/Add');
     })->name('add');
-    Route::get('/attendance-list', function() {
+    Route::get('/image', function () {
+        return Inertia::render('Users/image');
+    })->name('image');
+    Route::get('/attendance-list', function () {
         return Inertia::render('Users/AttendanceList');
     })->name('list-attendances');
 });

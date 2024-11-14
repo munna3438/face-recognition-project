@@ -1,21 +1,31 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input'
-import AuthLayout from '@/Layouts/AuthLayout'
-import { AddInstituteFormData, AddInstituteFormDataError, AddInstituteResponse } from '@/types';
-import { router } from '@inertiajs/react';
-import React, { useRef, useState } from 'react'
-import { FaSpinner } from 'react-icons/fa';
-import Swal from 'sweetalert2';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import AuthLayout from "@/Layouts/AuthLayout";
+import {
+    AddInstituteFormData,
+    AddInstituteFormDataError,
+    AddInstituteResponse,
+} from "@/types";
+import { router } from "@inertiajs/react";
+import React, { useRef, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
+import Swal from "sweetalert2";
+import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
+import { TfiEmail } from "react-icons/tfi";
+import { PiNetworkLight } from "react-icons/pi";
+import { MdOutlineControlCamera } from "react-icons/md";
+import { FiUser } from "react-icons/fi";
 
 export default function Add() {
     const formRef = useRef<HTMLFormElement>(null);
-    const [formDataErrors, setFormDataErrors] = useState<AddInstituteFormDataError>({
-        name: "",
-        email: "",
-        cam_ip: "",
-        cam_port: "",
-        max_user: "",
-    });
+    const [formDataErrors, setFormDataErrors] =
+        useState<AddInstituteFormDataError>({
+            name: "",
+            email: "",
+            cam_ip: "",
+            cam_port: "",
+            max_user: "",
+        });
 
     const [formData, setFormData] = useState<AddInstituteFormData>({
         name: "",
@@ -26,7 +36,6 @@ export default function Add() {
     });
 
     const [formLoading, setFormLoading] = useState<boolean>(false);
-
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const key = e.target.id;
@@ -94,7 +103,6 @@ export default function Add() {
         dataForm.append("cam_port", formData.cam_port);
         dataForm.append("max_user", formData.max_user);
 
-
         fetch("/api/institute/create", {
             method: "POST",
             body: dataForm,
@@ -128,7 +136,6 @@ export default function Add() {
             });
     }
 
-
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add Institute</h1>
@@ -139,70 +146,95 @@ export default function Add() {
                     className="flex flex-col gap-3"
                     encType="multipart/form-data"
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-8 gap-y-3 md:gap-y-6 ">
-                        <div className="flex flex-col gap-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-8 gap-y-3 md:gap-y-4 ">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="name">Institute Name</label>
-                            <Input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                id="name"
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    id="name"
+                                    onChange={handleChange}
+                                    placeholder="Type your institute name"
+                                    className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
+                                />
+                                <MdOutlineDriveFileRenameOutline className="absolute bottom-[11px] left-2 bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                            </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.name}
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="email">Institute Email</label>
-                            <Input
-                                type="text"
-                                name="email"
-                                value={formData.email}
-                                id="email"
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    name="email"
+                                    value={formData.email}
+                                    id="email"
+                                    onChange={handleChange}
+                                    className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
+                                    placeholder="Type your institute email"
+                                />
+                                <TfiEmail className="absolute bottom-[11px] left-2 bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                            </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.email}
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="cam_ip">Camera IP</label>
-                            <Input
-                                type="text"
-                                name="cam_ip"
-                                value={formData.cam_ip}
-                                id="cam_ip"
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    name="cam_ip"
+                                    value={formData.cam_ip}
+                                    id="cam_ip"
+                                    onChange={handleChange}
+                                    className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
+                                    placeholder="Type your camera ip"
+                                />
+                                <PiNetworkLight className="absolute bottom-[11px] left-2 bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                            </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.cam_ip}
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="cam_port">Camera Port</label>
-                            <Input
-                                type="number"
-                                name="cam_port"
-                                value={formData.cam_port}
-                                id="cam_port"
-                                min={0}
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <Input
+                                    type="number"
+                                    name="cam_port"
+                                    value={formData.cam_port}
+                                    id="cam_port"
+                                    min={0}
+                                    onChange={handleChange}
+                                    className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
+                                    placeholder="Type your camera port"
+                                />
+                                <MdOutlineControlCamera className="absolute bottom-[11px] left-2 bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                            </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.cam_port}
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="max_user">Max User</label>
-                            <Input
-                                type="number"
-                                name="max_user"
-                                value={formData.max_user}
-                                id="max_user"
-                                min={1}
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <Input
+                                    type="number"
+                                    name="max_user"
+                                    value={formData.max_user}
+                                    id="max_user"
+                                    min={1}
+                                    onChange={handleChange}
+                                    className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
+                                    placeholder="Type your max user"
+                                />
+                                <FiUser className="absolute bottom-[11px] left-2 bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                            </div>
                             <div className="text-sm text-red-500">
                                 {formDataErrors.max_user}
                             </div>
@@ -217,8 +249,8 @@ export default function Add() {
                                 <Button
                                     disabled={formLoading}
                                     type="submit"
-                                    className='w-32'
-                                // className="relative py-2 px-7 bg-blue-500 hover:bg-blue-600 text-white rounded disabled:cursor-not-allowed disabled:bg-blue-300 disabled:hover:bg-blue-300"
+                                    className="w-32"
+                                    // className="relative py-2 px-7 bg-blue-500 hover:bg-blue-600 text-white rounded disabled:cursor-not-allowed disabled:bg-blue-300 disabled:hover:bg-blue-300"
                                 >
                                     Save
                                 </Button>
@@ -235,5 +267,5 @@ export default function Add() {
                 </form>
             </div>
         </AuthLayout>
-    )
+    );
 }

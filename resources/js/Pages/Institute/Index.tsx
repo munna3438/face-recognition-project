@@ -1,3 +1,4 @@
+import NavLink from "@/Components/NavLink";
 import InstitutesTable from "@/components/user/InstitutesTable";
 import UsersTable from "@/components/user/UsersTable";
 import AuthLayout from "@/Layouts/AuthLayout";
@@ -14,19 +15,19 @@ export default function Index() {
 
     useEffect(() => {
         // const intervalId = setInterval(() => {
-            fetch("/api/institute/list")
-                .then((res) => res.json())
-                .then((data: InstituteListResponse) => {
-                    setInstitutes(data.data);
-                    // const isDataDifferent = !isEqual(data, prevUsersRef.current);
+        fetch("/api/institute/list")
+            .then((res) => res.json())
+            .then((data: InstituteListResponse) => {
+                setInstitutes(data.data);
+                // const isDataDifferent = !isEqual(data, prevUsersRef.current);
 
-                    // if (isDataDifferent) {
-                    //     prevUsersRef.current = data;
-                    // }
-                })
-                .finally(() => {
-                    setPending(false);
-                });
+                // if (isDataDifferent) {
+                //     prevUsersRef.current = data;
+                // }
+            })
+            .finally(() => {
+                setPending(false);
+            });
         // }, 1500);
 
         return () => {
@@ -36,13 +37,21 @@ export default function Index() {
 
     return (
         <AuthLayout>
-            <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Institutes List</h2>
+            <div className="mb-6 flex justify-between items-center">
+                <h2 className="text-lg font-bold">Institutes List</h2>
+
+                <NavLink
+                    href={route("institute.add")}
+                    active={route().current("institute.add")}
+                    className="primary_button"
+                >
+                    Add Institute
+                </NavLink>
             </div>
             <div className="relative top-14 ">
                 {pending && (
                     <div className="w-full h-14 absolute flex justify-center items-center">
-                        <FaSpinner className="text-2xl animate-spin" />
+                        <FaSpinner className="text-2xl animate-spin z-10" />
                     </div>
                 )}
             </div>
