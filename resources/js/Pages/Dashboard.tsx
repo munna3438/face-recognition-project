@@ -51,13 +51,13 @@ export default function Dashboard() {
 
     return (
         <AuthLayout>
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Live Face Recognition</h2>
+            <div className="mb-6 flex justify-between items-center">
+                <h2 className="text-lg font-bold">Live Face Recognition</h2>
             </div>
             <div className="relative top-14">
                 {pending && (
                     <div className="w-full h-14 absolute flex justify-center items-center">
-                        <FaSpinner className="text-2xl animate-spin" />
+                        <FaSpinner className="text-2xl animate-spin z-20" />
                     </div>
                 )}
             </div>

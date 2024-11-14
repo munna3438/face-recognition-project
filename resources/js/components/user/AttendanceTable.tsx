@@ -90,7 +90,12 @@ export default function AttendanceTable({
             header: "Exit Time",
             cell: ({ row }) => (
                 <div className="capitalize text-nowrap">
-                    {row.getValue("exit_time") ? format(row.getValue("exit_time"), "yyyy-MM-dd h:m:s a") : ''}
+                    {row.getValue("exit_time")
+                        ? format(
+                              row.getValue("exit_time"),
+                              "yyyy-MM-dd h:m:s a"
+                          )
+                        : ""}
                 </div>
             ),
         },
@@ -135,7 +140,7 @@ export default function AttendanceTable({
                             .getColumn("name")
                             ?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm border dark:bg-transparent dark:text-white dark:focus:border-white"
+                    className="max-w-sm dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -171,7 +176,10 @@ export default function AttendanceTable({
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead
+                                            key={header.id}
+                                            className="bg-muted"
+                                        >
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

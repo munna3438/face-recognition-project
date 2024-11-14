@@ -25,7 +25,7 @@ export default function DatePicker({
                 <Button
                     variant={"outline"}
                     className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-[280px] justify-start text-left font-normal text-md text_primary border-[#3996F6] border rounded-sm hover:text-[#3996F6]",
                         !date && "text-muted-foreground"
                     )}
                 >

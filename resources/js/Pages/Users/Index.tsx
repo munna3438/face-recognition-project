@@ -40,9 +40,7 @@ export default function Dashboard() {
     return (
         <AuthLayout>
             <div className="mb-6 flex justify-between items-center">
-                <h1 className="text-2xl md:text-3xl font-bold text_primary">
-                    Add User
-                </h1>
+                <h1 className="text-lg font-bold">Add User</h1>
                 <NavLink
                     href={route("users.image")}
                     active={route().current("dashboard")}

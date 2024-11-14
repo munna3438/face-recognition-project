@@ -155,9 +155,9 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                 <div className="w-1/2 grid grid-cols-2 gap-5 ">
                     <div
                         className={cn(
-                            "border border-dashed border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
                             {
-                                "outline outline-green-500 border-dashed border-green-500":
+                                "outline outline-green-500 border-dashed  border-green-500":
                                     captures[0] === selectedImage &&
                                     selectedImage !== undefined,
                             }
@@ -165,12 +165,12 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     >
                         {captures[0] !== "" ? (
                             <img
-                                className="w-full h-full rounded"
+                                className="w-full h-full rounded  object-cover"
                                 src={captures[0]}
                             />
                         ) : (
                             <div className="h-full w-full flex justify-center items-center">
-                                <GoPlus className="text-2xl text_secondary" />
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
                             </div>
                         )}
                         {captures[0] !== "" && (
@@ -198,7 +198,7 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     </div>
                     <div
                         className={cn(
-                            "border border-dashed border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
                             {
                                 "outline border-green-500 outline-green-500":
                                     captures[1] === selectedImage &&
@@ -208,12 +208,12 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     >
                         {captures[1] !== "" ? (
                             <img
-                                className="w-full h-full rounded"
+                                className="w-full h-full rounded object-cover"
                                 src={captures[1]}
                             />
                         ) : (
                             <div className="h-full w-full flex justify-center items-center">
-                                <GoPlus className="text-2xl text_secondary" />
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
                             </div>
                         )}
                         {captures[1] !== "" && (
@@ -241,7 +241,7 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     </div>
                     <div
                         className={cn(
-                            "border border-dashed border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
                             {
                                 "outline outline-green-500 border-green-500":
                                     captures[2] === selectedImage &&
@@ -251,12 +251,12 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     >
                         {captures[2] !== "" ? (
                             <img
-                                className="w-full h-full rounded"
+                                className="w-full h-full rounded object-cover"
                                 src={captures[2]}
                             />
                         ) : (
                             <div className="h-full w-full flex justify-center items-center">
-                                <GoPlus className="text-2xl text_secondary" />
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
                             </div>
                         )}
                         {captures[2] !== "" && (
@@ -284,7 +284,7 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     </div>
                     <div
                         className={cn(
-                            "border border-dashed border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
                             {
                                 "outline outline-green-500 border-green-500":
                                     captures[3] === selectedImage &&
@@ -294,12 +294,12 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     >
                         {captures[3] !== "" ? (
                             <img
-                                className="w-full h-full rounded"
+                                className="w-full h-full rounded object-cover"
                                 src={captures[3]}
                             />
                         ) : (
                             <div className="h-full w-full flex justify-center items-center">
-                                <GoPlus className="text-2xl text_secondary" />
+                                <GoPlus className="text-2xl text-[#262626] dark:text_secondary" />
                             </div>
                         )}
                         {captures[3] !== "" && (
@@ -345,13 +345,32 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                     >
                         Upload Image
                     </Button>
-                    <NavLink
-                        href={route("users.add")}
-                        active={route().current("users.add")}
-                        className="primary_button w-[150px] flex justify-center items-center"
+                    {/* if image selected then next button enable other wish next button will be desable */}
+                    {/* <Button
+                        type="button"
+                        className="primary_button text-md text-white bg-[#3996F6] h-[3rem] px-12"
+
                     >
                         Next
-                    </NavLink>
+                    </Button> */}
+                    {selectedImage ? (
+                        <NavLink
+                            href={route("users.add")}
+                            active={route().current("users.add")}
+                            className="primary_button w-[150px] flex justify-center items-center"
+                            disabled={!selectedImage}
+                        >
+                            Next
+                        </NavLink>
+                    ) : (
+                        <Button
+                            type="button"
+                            className="bg-[#25292A] h-11 text-white border border-[#25292A] w-[150px] flex justify-center items-center"
+                            disabled
+                        >
+                            Next
+                        </Button>
+                    )}
                 </div>
             </div>
             <input

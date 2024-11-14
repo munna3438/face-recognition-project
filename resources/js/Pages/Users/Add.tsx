@@ -199,18 +199,24 @@ export default function Add() {
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
-            <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:p-7 rounded-md">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div></div>
+            <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:py-7 md:px-10 rounded-md">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="w-[calc(100%-30px)] aspect-square bg-[#303538] p-4">
+                        <img
+                            src="/image/userPlaceholder.jpg"
+                            className="h-full w-full object-cover"
+                            alt=""
+                        />
+                    </div>
                     <div className="">
                         {/* Form */}
                         <form
                             ref={formRef}
                             onSubmit={handleFormSubmit}
-                            className="flex flex-col gap-3"
+                            className="flex flex-col gap-6"
                             encType="multipart/form-data"
                         >
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-2">
                                 <label htmlFor="user_name">Name</label>
                                 <div className="relative">
                                     <Input
@@ -218,9 +224,10 @@ export default function Add() {
                                         name="user_name"
                                         id="user_name"
                                         onChange={handleChange}
-                                        className="pl-10 "
+                                        placeholder="Type your name"
+                                        className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
                                     />
-                                    <CiUser className="absolute bottom-[10px] left-2  bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                                    <CiUser className="absolute bottom-[11px] left-2 bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
                                 </div>
                                 <div className="text-sm text-red-500">
                                     {formDataErrors.user_name}
@@ -234,7 +241,7 @@ export default function Add() {
                                         handleChange(e, "institute")
                                     }
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm dark:text-white">
                                         <SelectValue placeholder="Select an institute" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -262,9 +269,10 @@ export default function Add() {
                                         name="user_id"
                                         id="user_id"
                                         onChange={handleChange}
-                                        className="pl-10"
+                                        placeholder="Type your name"
+                                        className="pl-10 h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm"
                                     />
-                                    <MdOutlineContactPage className="absolute bottom-[10px] left-2  bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
+                                    <MdOutlineContactPage className="absolute bottom-[11px] left-2  bg-gray-100 dark:bg-transparent h-5 w-5 rounded-sm" />
                                 </div>
 
                                 <div className="text-sm text-red-500">
@@ -278,7 +286,7 @@ export default function Add() {
                                         handleChange(e, "gender")
                                     }
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="h-11 dark:bg-[#25292A] bg-[#FAFAFA] border border-[#3996F6] rounded-sm dark:text-white">
                                         <SelectValue placeholder="Select a gender" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -297,11 +305,14 @@ export default function Add() {
                                     <img src={faceImageUrl} className="h-52" />
                                 )}
                             </div>
-                            <div className="flex justify-center items-center">
+                            <div className="flex justify-end mt-8 items-center ">
                                 {formLoading && (
                                     <FaSpinner className="text-lg animate-spin" />
                                 )}
-                                <Button className="w-36" disabled={formLoading}>
+                                <Button
+                                    className="w-36 bg-[#3996F6] text-white hover:bg-transparent border border_primary hover:text_primary"
+                                    disabled={formLoading}
+                                >
                                     Submit
                                 </Button>
                             </div>

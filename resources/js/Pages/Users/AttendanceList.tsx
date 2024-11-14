@@ -40,14 +40,14 @@ export default function AttendanceList() {
 
     return (
         <AuthLayout>
-            <div className="flex justify-between flex-col md:flex-row gap-4 md:items-center mb-6">
-                <h2 className="text-2xl font-bold ">Attendance List</h2>
+            <div className="mb-6 flex justify-between items-center">
+                <h2 className="text-lg font-bold">Attendance List</h2>
                 <DatePicker date={date} setDate={setDate} />
             </div>
             <div className="relative top-14">
                 {pending && (
                     <div className="w-full h-14 absolute flex justify-center items-center">
-                        <FaSpinner className="text-2xl animate-spin" />
+                        <FaSpinner className="text-2xl animate-spin z-20" />
                     </div>
                 )}
             </div>

@@ -25,7 +25,7 @@ export default function image() {
                     <img src={faceImageUrl} className="h-52" />
                 )}
             </div> */}
-            <div className="bg-[#181A1C] p-10 w-full">
+            <div className="bg-muted dark:bg-[#181A1C] p-10 w-full">
                 <CamProvider setFaceImage={setFaceImage} />
                 {/* <div className="w-3/6">
                     <div className="w-full h-auto bg-[#303538] p-4">
