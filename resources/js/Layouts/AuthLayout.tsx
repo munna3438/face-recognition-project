@@ -1,3 +1,4 @@
+import Footer from "@/components/user/Footer";
 import Header from "@/components/user/Header";
 import { usePage } from "@inertiajs/react";
 import { PropsWithChildren, ReactNode } from "react";
@@ -11,9 +12,10 @@ export default function AuthLayout({
     return (
         <>
             <Header />
-            <main className="h-[100dvh] hx-container p-2 md:p-5">
+            <main className="min-h-[100dvh] hx-container p-2 md:p-5">
                 {children}
             </main>
+            <Footer />
         </>
     );
 }

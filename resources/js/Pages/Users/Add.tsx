@@ -22,7 +22,7 @@ import {
 import Swal from "sweetalert2";
 import { MdOutlineContactPage } from "react-icons/md";
 import { FaSpinner } from "react-icons/fa";
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import useStorage from "@/hooks/useStorage";
 
 export default function Add() {
@@ -216,12 +216,15 @@ export default function Add() {
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
             <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:py-7 md:px-10 rounded-md">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="w-[calc(100%-30px)] aspect-square bg-[#303538] p-4">
+                    <div className="w-[calc(100%-30px)] aspect-square bg-[#303538] p-4 pb-3">
                         <img
                             src={faceImageUrl}
                             className="h-full w-full object-cover"
                             alt=""
                         />
+                        <div className="text-center mt-3">
+                            <Link href="/users/image" className="text-blue-500">[Take another snap]</Link>
+                        </div>
                     </div>
                     <div className="">
                         {/* Form */}
