@@ -25,6 +25,25 @@ class FaceUserController extends Controller
             $file = $request->file('image');
             $imagePath = storeImage($file, '/users/');
 
+            $institute = Institute::where('token', $request->input('token'))->first();
+
+            $registeredUsers = EnrollUser::where('institute_id', $institute->id)->count();
+            if ($registeredUsers >= $institute->max_user) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Maximum user limit reached',
+                    'errors' => []
+                ], 400);
+            }
+
+            if (EnrollUser::where('UserID', $request->user_id)->where('institute_id', $institute->id)->first() != null) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'User ID already exists',
+                    'errors' => []
+                ], 400);
+            }
+
             EnrollUser::create([
                 'userName' => $request->user_name,
                 'UserID' => $request->user_id,
@@ -45,7 +64,8 @@ class FaceUserController extends Controller
         }
     }
 
-    public function userDelete($id) {
+    public function userDelete($id)
+    {
         DB::beginTransaction();
         try {
             $user = EnrollUser::find($id);
@@ -66,7 +86,8 @@ class FaceUserController extends Controller
 
     // Attendance Methods
 
-    public function attendanceLog(Request $request) {
+    public function attendanceLog(Request $request)
+    {
         return AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->get();
     }
 
