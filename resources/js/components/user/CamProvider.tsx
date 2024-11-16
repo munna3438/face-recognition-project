@@ -10,10 +10,13 @@ import NavLink from "@/Components/NavLink";
 import { IoMdCheckmark } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import "./style.css";
+import { router } from "@inertiajs/react";
+import useStorage from "@/hooks/useStorage";
 
-export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
+export default function CamProvider() {
     const camRef = useRef<null | any>(null);
     const fileRef = useRef<HTMLInputElement>(null);
+    const faceImageStorage = useStorage<ImageStorageType>('faceImageStorage');
 
     const [selectedImage, setSelectedImage] = useState<string>();
     const [tempCapture, setTempCapture] = useState<string>();
@@ -84,9 +87,9 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
 
     useEffect(() => {
         if (typeof selectedImage === "string" && selectedImage.length > 0) {
-            setFaceImage(base64ToFile(selectedImage));
+            faceImageStorage.setData({ image: selectedImage });
         } else {
-            setFaceImage(null);
+            faceImageStorage.setData({ image: null });
         }
     }, [selectedImage]);
 
@@ -359,6 +362,8 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
                             active={route().current("users.add")}
                             className="primary_button w-[150px] flex justify-center items-center"
                             disabled={!selectedImage}
+                            // data={{ query: "faceImage" }}
+                            preserveState
                         >
                             Next
                         </NavLink>
@@ -399,6 +404,10 @@ export default function CamProvider({ setFaceImage }: { setFaceImage: any }) {
         </div>
     );
 }
+
+export type ImageStorageType = {
+    image: string | null;
+};
 
 export function fileToBase64(file: File) {
     return new Promise((resolve, reject) => {

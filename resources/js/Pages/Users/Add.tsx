@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CamProvider, { fileToBase64 } from "@/components/user/CamProvider";
+import CamProvider, { base64ToFile, fileToBase64, ImageStorageType } from "@/components/user/CamProvider";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useEffect, useRef, useState } from "react";
 import { CiUser } from "react-icons/ci";
@@ -22,9 +22,12 @@ import {
 import Swal from "sweetalert2";
 import { MdOutlineContactPage } from "react-icons/md";
 import { FaSpinner } from "react-icons/fa";
-import { router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
+import useStorage from "@/hooks/useStorage";
 
 export default function Add() {
+    const faceImageStorage = useStorage<ImageStorageType>('faceImageStorage');
+
     const [faceImage, setFaceImage] = useState<File | null>(null);
     const [faceImageUrl, setFaceImageUrl] = useState<string>("");
     const formRef = useRef<HTMLFormElement>(null);
@@ -48,6 +51,16 @@ export default function Add() {
     });
 
     const [institutes, setInstitutes] = useState<Institute[]>([]);
+
+    useEffect(() => {
+        const imgBase64 = faceImageStorage?.storedValue?.image ?? null;
+        if (imgBase64) {
+            setFaceImageUrl(imgBase64);
+            setFaceImage(base64ToFile(imgBase64));
+        } else {
+            router.visit('/users/image');
+        }
+    }, [faceImageStorage]);
 
     function handleChange(
         e: React.ChangeEvent<HTMLInputElement> | string,
@@ -203,12 +216,15 @@ export default function Add() {
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
             <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:py-7 md:px-10 rounded-md">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="w-[calc(100%-30px)] aspect-square bg-[#303538] p-4">
+                    <div className="w-[calc(100%-30px)] aspect-square bg-[#303538] p-4 pb-3">
                         <img
-                            src="/image/userPlaceholder.jpg"
+                            src={faceImageUrl}
                             className="h-full w-full object-cover"
                             alt=""
                         />
+                        <div className="text-center mt-3">
+                            <Link href="/users/image" className="text-blue-500">[Take another snap]</Link>
+                        </div>
                     </div>
                     <div className="">
                         {/* Form */}
@@ -249,17 +265,17 @@ export default function Add() {
                                     <SelectContent>
                                         {institutes
                                             ? institutes.map((institute) => {
-                                                  return (
-                                                      <SelectItem
-                                                          key={institute.id}
-                                                          value={
-                                                              institute.token
-                                                          }
-                                                      >
-                                                          {institute.name}
-                                                      </SelectItem>
-                                                  );
-                                              })
+                                                return (
+                                                    <SelectItem
+                                                        key={institute.id}
+                                                        value={
+                                                            institute.token
+                                                        }
+                                                    >
+                                                        {institute.name}
+                                                    </SelectItem>
+                                                );
+                                            })
                                             : null}
                                     </SelectContent>
                                 </Select>
@@ -306,11 +322,11 @@ export default function Add() {
                                     {formDataErrors.gender}
                                 </div>
                             </div>
-                            <div className="w-full flex justify-center items-center">
+                            {/* <div className="w-full flex justify-center items-center">
                                 {faceImageUrl !== "" && (
                                     <img src={faceImageUrl} className="h-52" />
                                 )}
-                            </div>
+                            </div> */}
                             <div className="flex justify-end mt-8 items-center">
                                 {formLoading && (
                                     <FaSpinner className="text-lg animate-spin" />
