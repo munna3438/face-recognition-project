@@ -64,15 +64,6 @@ class FaceUserController extends Controller
 
             $institute = Institute::where('token', $request->input('token'))->first();
 
-            $registeredUsers = EnrollUser::where('institute_id', $institute->id)->count();
-            if($registeredUsers >= $institute->max_user) {
-                return response()->json([
-                    'error' => true,
-                    'message' => 'Maximum user limit reached',
-                    'errors' => []
-                ], 400);
-            }
-
             if(EnrollUser::where('UserID', $request->user_id)->where('institute_id', $institute->id)->first() != null)  {
                 return response()->json([
                     'error' => true,
