@@ -34,7 +34,7 @@ export default function Header() {
                 {/* <h3 className="text-lg font-bold py-1 px-3 rounded hover:bg-gray-900 cursor-default hover:text-white transition-all duration-300 select-none">
                 GOFACE
             </h3> */}
-                <div className="h-[50px]">
+                <div className=" md:h-[50px] w-auto">
                     <img
                         src="/image/facetouch-Logo.png"
                         className="h-full w-auto"
@@ -85,31 +85,7 @@ export default function Header() {
                             <span>Institute</span>
                         </NavLink>
                     </li>
-                    {/* <li>
-                        <NavLink
-                            href={route("institute.add")}
-                            active={route().current("institute.add")}
-                        >
-                            Add Institute
-                        </NavLink>
-                    </li> */}
-                    {/* <li>
-                        <NavLink
-                            href={route("users.add")}
-                            active={route().current("users.add")}
-                            className="flex flex-col items-center text-lg"
-                        >
-                            <span>Add User</span>
-                        </NavLink>
-                    </li> */}
-                    {/* <li>
-                    <NavLink
-                        href="/rest"
-                        active={route().current('rest')}
-                    >
-                        Face Detections
-                    </NavLink>
-                </li> */}
+
                     <li>
                         <ThemeToggle />
                     </li>
@@ -170,13 +146,14 @@ export default function Header() {
                                     Users
                                 </NavLink>
                             </li>
+
                             <li>
                                 <NavLink
-                                    href={route("users.add")}
-                                    active={route().current("users.add")}
+                                    href={route("institute.index")}
+                                    active={route().current("institute.index")}
                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded hover:no-underline"
                                 >
-                                    Add User
+                                    Institute
                                 </NavLink>
                             </li>
                         </ul>

@@ -74,7 +74,7 @@ export default function Index() {
 
     return (
         <AuthLayout>
-            <div className="mb-6 flex justify-between items-center">
+            <div className="mb-6 flex justify-between items-center flex-col sm:flex-row gap-4">
                 <h1 className="text-lg font-bold">Add User</h1>
                 <div>
                     <Select

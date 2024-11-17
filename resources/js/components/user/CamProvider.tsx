@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 import Webcam from "react-webcam";
-import { TiTick } from "react-icons/ti";
-import { IoTrashBin } from "react-icons/io5";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Swal from "sweetalert2";
@@ -12,6 +10,7 @@ import { MdClose } from "react-icons/md";
 import "./style.css";
 import { router } from "@inertiajs/react";
 import useStorage from "@/hooks/useStorage";
+import { IoCameraOutline } from "react-icons/io5";
 
 export default function CamProvider() {
     const camRef = useRef<null | any>(null);
@@ -119,7 +118,7 @@ export default function CamProvider() {
     return (
         <div>
             <div className="flex flex-col md:flex-row gap-10 w-full mb-10">
-                <div className="w-1/2">
+                <div className="w-full md:w-1/2 relative">
                     {/* <div className="w-full h-[420px] bg-[#303538] p-4 video_scan_container">
                         <div className="h-full w-full ">
                             <Webcam
@@ -133,7 +132,7 @@ export default function CamProvider() {
                             <span className="scanner-span"></span>
                         </div>
                     </div> */}
-                    <div className="w-full h-[420px] bg-transparent p-4 video_scan_container">
+                    <div className="w-full h-auto md:h-[420px] bg-transparent p-6 md:p-4 video_scan_container">
                         <span className="top-0 left-0 h-1 w-10 bg_primary absolute"></span>
                         <span className="top-0 right-0 h-1 w-10 bg_primary absolute"></span>
                         <span className="top-0 left-0 h-10 w-1 bg_primary absolute"></span>
@@ -153,9 +152,23 @@ export default function CamProvider() {
                         <div className="video_canner">
                             <span className="scanner-span"></span>
                         </div>
+                        <div
+                            className="block md:hidden absolute bottom-0 left-[calc(50%-20px)] cursor-pointer z-10 bg-transparent border-2 border_primary  text-white p-1 rounded-full"
+                            onClick={captureImage}
+                        >
+                            {/* <Button
+                                type="button"
+                                onClick={captureImage}
+                                className="bg-transparent border border_primary  !p-0 text-[#3996F6] "
+                            >
+                            </Button> */}
+                            <div className="p-2 bg_primary rounded-full">
+                                <IoCameraOutline />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="w-1/2 grid grid-cols-2 gap-5 ">
+                <div className="w-full md:w-1/2 grid grid-cols-2 gap-5 ">
                     <div
                         className={cn(
                             "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
@@ -342,8 +355,8 @@ export default function CamProvider() {
                     </div>
                 </div>
             </div>
-            <div className="flex gap-10">
-                <div className="w-1/2 flex justify-center">
+            <div className="flex gap-10 flex-col md:flex-row">
+                <div className="w-full md:w-1/2 hidden md:flex justify-center">
                     <Button
                         onClick={captureImage}
                         className="primary_button text-md bg-[#3996F6] hover:bg-transparent hover:text-[#3996F6] text-white h-[3rem] px-12"
@@ -351,7 +364,7 @@ export default function CamProvider() {
                         Take Snap
                     </Button>
                 </div>
-                <div className="w-1/2 flex items-center justify-end gap-5">
+                <div className="w-full md:w-1/2 flex items-center justify-end gap-5 flex-col md:flex-row">
                     <p>You can use your drive</p>
                     <Button
                         type="button"

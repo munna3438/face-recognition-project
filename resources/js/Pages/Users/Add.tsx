@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CamProvider, { base64ToFile, fileToBase64, ImageStorageType } from "@/components/user/CamProvider";
+import CamProvider, {
+    base64ToFile,
+    fileToBase64,
+    ImageStorageType,
+} from "@/components/user/CamProvider";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useEffect, useRef, useState } from "react";
 import { CiUser } from "react-icons/ci";
@@ -26,7 +30,7 @@ import { Link, router, usePage } from "@inertiajs/react";
 import useStorage from "@/hooks/useStorage";
 
 export default function Add() {
-    const faceImageStorage = useStorage<ImageStorageType>('faceImageStorage');
+    const faceImageStorage = useStorage<ImageStorageType>("faceImageStorage");
 
     const [faceImage, setFaceImage] = useState<File | null>(null);
     const [faceImageUrl, setFaceImageUrl] = useState<string>("");
@@ -58,7 +62,7 @@ export default function Add() {
             setFaceImageUrl(imgBase64);
             setFaceImage(base64ToFile(imgBase64));
         } else {
-            router.visit('/users/image');
+            router.visit("/users/image");
         }
     }, [faceImageStorage]);
 
@@ -216,14 +220,16 @@ export default function Add() {
             <h1 className="text-2xl font-bold mb-6">Add User</h1>
             <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:py-7 md:px-10 rounded-md">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="w-[calc(100%-30px)] aspect-square bg-[#303538] p-4 pb-3">
+                    <div className="w-full md:w-[calc(100%-30px)] aspect-square bg-[#303538] p-4 pb-3">
                         <img
                             src={faceImageUrl}
                             className="h-full w-full object-cover"
                             alt=""
                         />
                         <div className="text-center mt-3">
-                            <Link href="/users/image" className="text-blue-500">[Take another snap]</Link>
+                            <Link href="/users/image" className="text-blue-500">
+                                [Take another snap]
+                            </Link>
                         </div>
                     </div>
                     <div className="">
@@ -265,17 +271,17 @@ export default function Add() {
                                     <SelectContent>
                                         {institutes
                                             ? institutes.map((institute) => {
-                                                return (
-                                                    <SelectItem
-                                                        key={institute.id}
-                                                        value={
-                                                            institute.token
-                                                        }
-                                                    >
-                                                        {institute.name}
-                                                    </SelectItem>
-                                                );
-                                            })
+                                                  return (
+                                                      <SelectItem
+                                                          key={institute.id}
+                                                          value={
+                                                              institute.token
+                                                          }
+                                                      >
+                                                          {institute.name}
+                                                      </SelectItem>
+                                                  );
+                                              })
                                             : null}
                                     </SelectContent>
                                 </Select>
