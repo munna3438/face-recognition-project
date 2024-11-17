@@ -30,7 +30,7 @@ export default function Header() {
 
     return (
         <div className="w-full h-fit border-b bg-[#25292A] mb-6 sticky top-0 z-10">
-            <div className="hx-container p-2 md:p-4 flex justify-between items-center gap-8 border-b">
+            <div className="hx-container p-2 md:p-4 flex justify-between items-center gap-8 ">
                 {/* <h3 className="text-lg font-bold py-1 px-3 rounded hover:bg-gray-900 cursor-default hover:text-white transition-all duration-300 select-none">
                 GOFACE
             </h3> */}

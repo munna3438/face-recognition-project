@@ -16,7 +16,7 @@ import useStorage from "@/hooks/useStorage";
 export default function CamProvider() {
     const camRef = useRef<null | any>(null);
     const fileRef = useRef<HTMLInputElement>(null);
-    const faceImageStorage = useStorage<ImageStorageType>('faceImageStorage');
+    const faceImageStorage = useStorage<ImageStorageType>("faceImageStorage");
 
     const [selectedImage, setSelectedImage] = useState<string>();
     const [tempCapture, setTempCapture] = useState<string>();
@@ -177,16 +177,19 @@ export default function CamProvider() {
                             </div>
                         )}
                         {captures[0] !== "" && (
-                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                            <div
+                                className="hidden group-hover:block h-full w-full absolute top-0 left-0 text-right"
+                                onClick={() => setSelectedImage(captures[0])}
+                            >
                                 <Button
-                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    className="p-[3px] h-6 w-6 m-3 rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeCapture(0)}
                                 >
                                     <MdClose size={18} />
                                 </Button>
-                                <Button
+                                {/* <Button
                                     className="p-[3px] h-auto rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
@@ -195,7 +198,7 @@ export default function CamProvider() {
                                     }
                                 >
                                     <IoMdCheckmark size={18} />
-                                </Button>
+                                </Button> */}
                             </div>
                         )}
                     </div>
@@ -220,17 +223,20 @@ export default function CamProvider() {
                             </div>
                         )}
                         {captures[1] !== "" && (
-                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                            <div
+                                className="hidden group-hover:block h-full w-full absolute top-0 left-0 text-right"
+                                onClick={() => setSelectedImage(captures[1])}
+                            >
                                 <Button
-                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    className="p-[3px] h-6 w-6 m-3 rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeCapture(1)}
                                 >
                                     <MdClose size={18} />
                                 </Button>
-                                <Button
-                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                {/* <Button
+                                    className="p-[3px] h-6 w-6 m-3 rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
                                     onClick={() =>
@@ -238,7 +244,7 @@ export default function CamProvider() {
                                     }
                                 >
                                     <IoMdCheckmark size={18} />
-                                </Button>
+                                </Button> */}
                             </div>
                         )}
                     </div>
@@ -263,17 +269,20 @@ export default function CamProvider() {
                             </div>
                         )}
                         {captures[2] !== "" && (
-                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                            <div
+                                className="hidden group-hover:block h-full w-full absolute top-0 left-0 text-right"
+                                onClick={() => setSelectedImage(captures[2])}
+                            >
                                 <Button
-                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    className="p-[3px] h-6 w-6 m-3 rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeCapture(2)}
                                 >
                                     <MdClose size={18} />
                                 </Button>
-                                <Button
-                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                {/* <Button
+                                    className="p-[3px] h-6 w-6 m-3 rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
                                     onClick={() =>
@@ -281,7 +290,7 @@ export default function CamProvider() {
                                     }
                                 >
                                     <IoMdCheckmark size={18} />
-                                </Button>
+                                </Button> */}
                             </div>
                         )}
                     </div>
@@ -306,16 +315,19 @@ export default function CamProvider() {
                             </div>
                         )}
                         {captures[3] !== "" && (
-                            <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-2">
+                            <div
+                                className="hidden group-hover:block h-full w-full absolute top-0 left-0 text-right"
+                                onClick={() => setSelectedImage(captures[3])}
+                            >
                                 <Button
-                                    className="p-[3px] h-auto rounded-[3px] bg-accent"
+                                    className="p-[3px] h-6 w-6 m-3 rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeCapture(3)}
                                 >
                                     <MdClose size={18} />
                                 </Button>
-                                <Button
+                                {/* <Button
                                     className="p-[3px] h-auto rounded-[3px] bg-accent"
                                     variant="ghost"
                                     size="sm"
@@ -324,7 +336,7 @@ export default function CamProvider() {
                                     }
                                 >
                                     <IoMdCheckmark size={18} />
-                                </Button>
+                                </Button> */}
                             </div>
                         )}
                     </div>
@@ -334,7 +346,7 @@ export default function CamProvider() {
                 <div className="w-1/2 flex justify-center">
                     <Button
                         onClick={captureImage}
-                        className="primary_button text-md text-white bg-[#3996F6] h-[3rem] px-12"
+                        className="primary_button text-md bg-[#3996F6] hover:bg-transparent hover:text-[#3996F6] text-white h-[3rem] px-12"
                     >
                         Take Snap
                     </Button>
@@ -343,7 +355,7 @@ export default function CamProvider() {
                     <p>You can use your drive</p>
                     <Button
                         type="button"
-                        className="primary_button text-md text-[#3996F6] bg-transparent h-[3rem] w-[150px]"
+                        className="primary_button bg-[#3996F6] hover:bg-transparent hover:text-[#3996F6] text-white px-12 text-md h-[3rem] w-[150px]"
                         onClick={uploadImageBtn}
                     >
                         Upload Image
@@ -370,7 +382,7 @@ export default function CamProvider() {
                     ) : (
                         <Button
                             type="button"
-                            className="bg-[#25292A] h-11 text-white border border-[#25292A] w-[150px] flex justify-center items-center"
+                            className="bg-[#25292A] text-white h-11 border border-[#25292A] w-[150px] flex justify-center items-center"
                             disabled
                         >
                             Next

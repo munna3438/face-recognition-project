@@ -138,7 +138,7 @@ export default function Add() {
 
     return (
         <AuthLayout>
-            <h1 className="text-2xl font-bold mb-6">Add Institute</h1>
+            <h1 className="text-lg font-bold mb-6">Add Institute</h1>
             <div className="bg-gray-100 dark:bg-opacity-[0.03] border p-3 md:p-7 rounded-md">
                 <form
                     ref={formRef}
@@ -220,7 +220,7 @@ export default function Add() {
                                 {formDataErrors.cam_port}
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 ">
                             <label htmlFor="max_user">Max User</label>
                             <div className="relative">
                                 <Input
@@ -240,7 +240,7 @@ export default function Add() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-end items-center mt-6">
+                    <div className="flex justify-end items-center">
                         <div>
                             <div className="flex gap-3 justify-end items-center">
                                 {formLoading && (
@@ -249,7 +249,7 @@ export default function Add() {
                                 <Button
                                     disabled={formLoading}
                                     type="submit"
-                                    className="w-32"
+                                    className="w-36 bg-[#3996F6] text-white hover:bg-transparent border border_primary hover:text_primary"
                                     // className="relative py-2 px-7 bg-blue-500 hover:bg-blue-600 text-white rounded disabled:cursor-not-allowed disabled:bg-blue-300 disabled:hover:bg-blue-300"
                                 >
                                     Save
