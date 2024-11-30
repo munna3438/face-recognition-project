@@ -124,10 +124,10 @@ export default function Add() {
                 title: "Please select an image.",
             });
             isValid = false;
-        } else if (formData.image.size > 52000) {
+        } else if (formData.image.size > 512000) {
             Swal.fire({
                 icon: "error",
-                title: "Image size must be less than 52KB",
+                title: "Image size must be less than 512KB",
             });
             isValid = false;
         }
