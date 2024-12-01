@@ -1,0 +1,11 @@
+main: php artisan serve --port=8088
+serve-lan: php artisan serve --host=192.168.0.108 --port=8088
+#  --secure --key=ssl_keys/server.key --cert=ssl_keys/server.crt
+dev: npm run dev
+build: npm run build
+mmm: php artisan make:model --migrate
+mm: php artisan make:migration
+mc: php artisan make:controller
+m: php artisan migrate
+mr: php artisan migrate:rollback
+# Runner: https://github.com/mhs003/go-runner

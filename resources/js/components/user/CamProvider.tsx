@@ -118,22 +118,9 @@ export default function CamProvider() {
     }, [tempCapture]);
     return (
         <div>
-            <div className="flex flex-col md:flex-row gap-10 w-full mb-10">
-                <div className="w-1/2">
-                    {/* <div className="w-full h-[420px] bg-[#303538] p-4 video_scan_container">
-                        <div className="h-full w-full ">
-                            <Webcam
-                                ref={camRef}
-                                screenshotFormat="image/jpeg"
-                                videoConstraints={{ facingMode: "selfie" }}
-                                className="h-full w-full"
-                            />
-                        </div>
-                        <div className="video_canner">
-                            <span className="scanner-span"></span>
-                        </div>
-                    </div> */}
-                    <div className="w-full h-[420px] bg-transparent p-4 video_scan_container">
+            <div className="flex flex-col-reverse md:flex-row gap-10 w-full mb-10">
+                <div className="w-full md:w-1/2">
+                    <div className="w-full aspect-square md:aspect-auto md:h-[420px] bg-transparent p-4 video_scan_container">
                         <span className="top-0 left-0 h-1 w-10 bg_primary absolute"></span>
                         <span className="top-0 right-0 h-1 w-10 bg_primary absolute"></span>
                         <span className="top-0 left-0 h-10 w-1 bg_primary absolute"></span>
@@ -155,10 +142,10 @@ export default function CamProvider() {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/2 grid grid-cols-2 gap-5 ">
+                <div className="w-full md:w-1/2 grid grid-cols-2 gap-5 ">
                     <div
                         className={cn(
-                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full aspect-square md:aspect-auto md:h-[200px] group rounded-sm",
                             {
                                 "outline outline-green-500 border-dashed  border-green-500":
                                     captures[0] === selectedImage &&
@@ -201,7 +188,7 @@ export default function CamProvider() {
                     </div>
                     <div
                         className={cn(
-                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full aspect-square md:aspect-auto md:h-[200px] group rounded-sm",
                             {
                                 "outline border-green-500 outline-green-500":
                                     captures[1] === selectedImage &&
@@ -244,7 +231,7 @@ export default function CamProvider() {
                     </div>
                     <div
                         className={cn(
-                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full aspect-square md:aspect-auto md:h-[200px] group rounded-sm",
                             {
                                 "outline outline-green-500 border-green-500":
                                     captures[2] === selectedImage &&
@@ -287,7 +274,7 @@ export default function CamProvider() {
                     </div>
                     <div
                         className={cn(
-                            "border border-dashed border-[#262626] dark:border_secondary relative w-full h-[200px] group rounded-sm",
+                            "border border-dashed border-[#262626] dark:border_secondary relative w-full aspect-square md:aspect-auto md:h-[200px] group rounded-sm",
                             {
                                 "outline outline-green-500 border-green-500":
                                     captures[3] === selectedImage &&
@@ -330,20 +317,30 @@ export default function CamProvider() {
                     </div>
                 </div>
             </div>
-            <div className="flex gap-10">
-                <div className="w-1/2 flex justify-center">
+            <div className="flex flex-col md:flex-row gap-10">
+                <div className="w-full md:w-1/2 flex justify-center flex-col gap-1">
                     <Button
                         onClick={captureImage}
                         className="primary_button text-md text-white bg-[#3996F6] h-[3rem] px-12"
                     >
                         Take Snap
                     </Button>
+                    <div className="md:hidden flex flex-col justify-center items-center w-full gap-1">
+                        <p>or,</p>
+                        <Button
+                            type="button"
+                            className="primary_button text-md text-[#3996F6] bg-transparent h-[3rem] w-[150px]"
+                            onClick={uploadImageBtn}
+                        >
+                            Upload Image
+                        </Button>
+                    </div>
                 </div>
-                <div className="w-1/2 flex items-center justify-end gap-5">
-                    <p>You can use your drive</p>
+                <div className="w-full md:w-1/2 flex items-center justify-center md:justify-end gap-5">
+                    <p className="hidden md:block">You can use your drive</p>
                     <Button
                         type="button"
-                        className="primary_button text-md text-[#3996F6] bg-transparent h-[3rem] w-[150px]"
+                        className="primary_button text-md text-[#3996F6] bg-transparent h-[3rem] w-[150px] hidden md:block"
                         onClick={uploadImageBtn}
                     >
                         Upload Image
