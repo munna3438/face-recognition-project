@@ -21,6 +21,7 @@ export default function CamProvider() {
     const [selectedImage, setSelectedImage] = useState<string>();
     const [tempCapture, setTempCapture] = useState<string>();
     const [captures, setCaptures] = useState<string[]>(["", "", "", ""]);
+    const [facing, setFacing] = useState<string>("user");
 
     const captureImage = useCallback(() => {
         if (camRef.current) {
@@ -116,6 +117,12 @@ export default function CamProvider() {
             return old;
         });
     }, [tempCapture]);
+
+    const videoConstraints = {
+        width: 1080,
+        height: 1080,
+        facingMode: facing === 'environment' ? { exact: "environment" } : facing
+      };
     return (
         <div>
             <div className="flex flex-col-reverse md:flex-row gap-10 w-full mb-10">
@@ -133,13 +140,21 @@ export default function CamProvider() {
                             <Webcam
                                 ref={camRef}
                                 screenshotFormat="image/jpeg"
-                                videoConstraints={{ facingMode: "selfie" }}
+                                height={1080}
+                                width={1080}
+                                videoConstraints={videoConstraints}
                                 className="h-full w-full"
                             />
                         </div>
                         <div className="video_canner">
                             <span className="scanner-span"></span>
                         </div>
+                    </div>
+                    <div className="flex justify-center items-center gap-2">
+                        <button onClick={() => setFacing('selfie')} className="flex justify-center items-center w-9 aspect-square bg-slate-800 hover:bg-slate-900 text-white rounded">-</button>
+                        <button onClick={() => setFacing('user')} className="flex justify-center items-center w-9 aspect-square bg-slate-800 hover:bg-slate-900 text-white rounded">-</button>
+                        <button onClick={() => setFacing('forward')} className="flex justify-center items-center w-9 aspect-square bg-slate-800 hover:bg-slate-900 text-white rounded">-</button>
+                        <button onClick={() => setFacing('environment')} className="flex justify-center items-center w-9 aspect-square bg-slate-800 hover:bg-slate-900 text-white rounded">-</button>
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 grid grid-cols-2 gap-5 ">

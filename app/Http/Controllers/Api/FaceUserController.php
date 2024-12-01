@@ -64,7 +64,7 @@ class FaceUserController extends Controller
 
             $institute = Institute::where('token', $request->input('token'))->first();
 
-            if(EnrollUser::where('UserID', $request->user_id)->where('institute_id', $institute->id)->first() != null)  {
+            if(EnrollUser::where('UserID', $request->user_id)->where('deleted', 0)->where('institute_id', $institute->id)->first() != null)  {
                 return response()->json([
                     'error' => true,
                     'message' => 'User ID already exists',
@@ -126,7 +126,7 @@ class FaceUserController extends Controller
     public function attendanceLog(Request $request) {
         try {
             $institute = Institute::where('token', $request->input('token'))->first();
-            $logs = AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->where('institute_id', $institute->id)->orderBy('id', 'desc')->get();
+            $logs = AttendanceLogs::select('id', 'user_id', 'name', 'image', 'sex', 'snap_timestamp')->where('institute_id', $institute->id)->orderBy('id', 'desc')->take(100)->get();
             return response()->json(['error' => false, 'message' => 'Attendance logs', 'data' => $logs], 200);
         } catch (Exception $e) {
             return response()->json([

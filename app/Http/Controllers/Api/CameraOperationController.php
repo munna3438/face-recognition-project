@@ -24,7 +24,6 @@ class CameraOperationController extends Controller
             $institute = Institute::where('token', $token);
             if(!$institute->exists()) {
                 throw new Exception('Invalid token');
-                return;
             }
 
             $imgPath = public_path('image/attendance/' . $request->frpic_name);
@@ -98,12 +97,25 @@ class CameraOperationController extends Controller
                 throw new Exception('Invalid token');
             }
 
+            // writeLog(json_encode($request->all(), JSON_PRETTY_PRINT), 'taskRequest.txt');
+
             $enrollUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_id', $institute->first()->id)->where('status', 0);
-            $updatedUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_id', $institute->first()->id)->where('status', 1)->where('updated', 1);
-            $deletedUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_id', $institute->first()->id)->where('status', 1)->where('deleted', 1);
+            $updatedUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_id', $institute->first()->id)->where('updated', 1);
+            $deletedUser = EnrollUser::select('userName', 'UserID', 'userGender', 'userImage', 'status')->where('institute_id', $institute->first()->id)->where('deleted', 1);
 
 
-            if ($enrollUser->exists()) {
+            if($deletedUser->exists()) {
+                $deletedUser = $deletedUser->first();
+                $request_id = rand(11111111, 99999999);
+                $request_type = "deleteUser";
+                $res = [
+                    'request_id' => $request_id,
+                    'request_type' => $request_type,
+                    'user_id' => $deletedUser->UserID,
+                ];
+                $output->writeln("<info>Userdata Sent to camera</info> ");
+                return response()->json($res);
+            } else if ($enrollUser->exists()) {
                 $enrollUser = $enrollUser->first();
                 $request_id = rand(11111111, 99999999);
                 $request_type = "addUser";
@@ -147,17 +159,6 @@ class CameraOperationController extends Controller
                 ];
                 $output->writeln("<info>Userdata Sent to camera</info> ");
                 return response()->json($res);
-            } else if($deletedUser->exists()) {
-                $deletedUser = $deletedUser->first();
-                $request_id = rand(11111111, 99999999);
-                $request_type = "deleteUser";
-                $res = [
-                    'request_id' => $request_id,
-                    'request_type' => $request_type,
-                    'user_id' => $deletedUser->UserID,
-                ];
-                $output->writeln("<info>Userdata Sent to camera</info> ");
-                return response()->json($res);
             }
         } catch (Exception $e) {
             $output->writeln("<error>Error sanding user data to camera");
@@ -178,10 +179,27 @@ class CameraOperationController extends Controller
 
             if(!$institute->exists()) {
                 throw new Exception('Invalid token');
-                return;
             }
+            // writeLog(json_encode($request->all(), JSON_PRETTY_PRINT), 'taskResult.txt');
             $resp_type = $request->resp_type;
+
             switch ($resp_type) {
+                case 'deleteUser':
+                    $user_id = $request->user_id;
+                    $code = $request->code;
+                    $enrollUser = EnrollUser::where('UserID', $user_id)->where('deleted', 1)->where('institute_id', $institute->first()->id);
+                    if ($code == 0) {
+                        $uimg = public_path($enrollUser->first()->userImage);
+                        deleteImage($uimg);
+                        $enrollUser->delete();
+                        return response()->json($request->all());
+                    } else {
+                        $enrollUser->update([
+                            'hidden' => 0,
+                            'log' => "[Delete Failed] Code: " . $code . " | Message: " . getErrorMsgFromCode($code)
+                        ]);
+                    }
+                    break;
                 case 'addUser':
                     $user_id = $request->resp_list[0]['user_id'];
                     $code = $request->resp_list[0]['code'];
@@ -212,22 +230,6 @@ class CameraOperationController extends Controller
                     } else {
                         $enrollUser->update([
                             'log' => "Code: " . $code . " | Message: " . getErrorMsgFromCode($code)
-                        ]);
-                    }
-                    break;
-                case 'deleteUser':
-                    $user_id = $request->resp_list[0]['user_id'];
-                    $code = $request->resp_list[0]['code'];
-                    $enrollUser = EnrollUser::where('UserID', $user_id)->where('institute_id', $institute->first()->id);
-                    if ($code == 0) {
-                        $uimg = public_path($enrollUser->userImage);
-                        deleteImage($uimg);
-                        $enrollUser->delete();
-                        return response()->json($request->all());
-                    } else {
-                        $enrollUser->update([
-                            'hidden' => 0,
-                            'log' => "[Delete Failed] Code: " . $code . " | Message: " . getErrorMsgFromCode($code)
                         ]);
                     }
                     break;

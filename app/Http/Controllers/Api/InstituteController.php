@@ -15,7 +15,7 @@ class InstituteController extends Controller
     public function listInstitute(Request $request)
     {
         try {
-            $institutes = Institute::select('id', 'name', 'email', 'cam_ip', 'cam_port', 'token', 'max_user', 'status')->orderBy('id', 'desc')->get();
+            $institutes = Institute::select('id', 'name', 'email', 'cam_ip', 'cam_port', 'token', 'max_user', 'status')->orderBy('id', 'desc')->where('status', 'active')->get();
             return response()->json([
                 'error' => false,
                 'message' => 'Institute List',

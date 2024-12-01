@@ -4,8 +4,11 @@ import { ThemeToggle } from "../theme-toggle";
 import { GoHome } from "react-icons/go";
 import { FiUserCheck, FiUsers } from "react-icons/fi";
 import { LuSchool } from "react-icons/lu";
+import { usePage } from "@inertiajs/react";
 
 export default function Header() {
+    const user = usePage().props.auth.user;
+
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,16 +48,18 @@ export default function Header() {
                     <ThemeToggle />
                 </div>
                 <ul className="hidden md:flex gap-10 md:items-center">
-                    <li>
-                        <NavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                            className="flex flex-col items-center text-lg hover:text_primary "
-                        >
-                            <GoHome className="text-xl" />
-                            <span>Home</span>
-                        </NavLink>
-                    </li>
+                    {user.email === "admin@touchandsolve.com" && (
+                        <li>
+                            <NavLink
+                                href={route("dashboard")}
+                                active={route().current("dashboard")}
+                                className="flex flex-col items-center text-lg hover:text_primary "
+                            >
+                                <GoHome className="text-xl" />
+                                <span>Home</span>
+                            </NavLink>
+                        </li>
+                    )}
                     <li>
                         <NavLink
                             href={route("users.list-attendances")}

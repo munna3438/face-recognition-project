@@ -1,14 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Models\enrollUser;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
+use App\Http\Middleware\OnlyTNS;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -33,9 +28,9 @@ Route::get('/', function () {
 //     return response()->json(['val' => $req->input('data')]);
 // });
 
-Route::get('/dashboard', function () {
+Route::middleware(['auth', 'verified', OnlyTNS::class])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
