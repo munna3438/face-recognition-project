@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EnrollUser extends Model
 {
-    protected $fillable = ['userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_id'];
+    protected $fillable = ['userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_id', 'hidden', 'deleted', 'updated'];
 
     protected static function booted()
     {

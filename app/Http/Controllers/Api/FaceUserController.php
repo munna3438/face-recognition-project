@@ -19,7 +19,7 @@ class FaceUserController extends Controller
     {
         try {
             $institute = Institute::where('token', $request->input('token'))->first();
-            $users = EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_id')->where('institute_id', $institute->id)->orderBy('id', 'desc')->get();
+            $users = EnrollUser::select('id', 'userName', 'UserID', 'userGender', 'userImage', 'status', 'log', 'institute_id')->where('institute_id', $institute->id)->where('hidden', 0)->orderBy('id', 'desc')->get();
             return response()->json(['error' => false, 'message' => 'User list', 'data' => $users], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -103,9 +103,12 @@ class FaceUserController extends Controller
                     'errors' => []
                 ], 404);
             }
-            $uimg = public_path($user->userImage);
-            deleteImage($uimg);
-            $user->delete();
+            $user->hidden = true;
+            $user->deleted = true;
+            $user->save();
+            // $uimg = public_path($user->userImage);
+            // deleteImage($uimg);
+            // $user->delete();
             DB::commit();
             return response()->json(['error' => false, 'message' => 'User deleted successfully'], 200);
         } catch (Exception $e) {
